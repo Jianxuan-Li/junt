@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "NodeNext",
+    "target": "es6",
+    "allowJs": true,
+    "jsx": "react",
+    "moduleResolution": "NodeNext",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "files": ["src/popup.tsx", "src/fullpage.ts"]
+}

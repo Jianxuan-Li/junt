@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.base{
+    width: 600px;
+    height: 600px;
+    overflow-x: hidden;
+    padding: 10px;
+}
