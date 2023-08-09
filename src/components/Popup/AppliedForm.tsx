@@ -8,17 +8,40 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from '@mui/icons-material/Save';
+import SaveIcon from "@mui/icons-material/Save";
 // import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
+import { saveApplied } from "@/libs/jobUtil";
 
 type Props = {};
 
 export default function AppliedForm({}: Props) {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log(
+      data.get("company"),
+      data.get("position"),
+      data.get("datetime")
+    );
+    saveApplied({
+      id: 1,
+      company: data.get("company") as string,
+      title: data.get("position") as string,
+      datetime: data.get("datetime") as string
+    });
+  };
+
   return (
-    <Box autoComplete="off" component="form" sx={{ width: "100%" }}>
+    <Box
+      autoComplete="off"
+      component="form"
+      sx={{ width: "100%" }}
+      onSubmit={handleSubmit}
+    >
       <FormControl fullWidth={true}>
         <TextField
           label="Company Name"
+          name="company"
           defaultValue=""
           size="small"
           fullWidth={true}
@@ -26,6 +49,7 @@ export default function AppliedForm({}: Props) {
         />
         <TextField
           label="Position"
+          name="position"
           defaultValue=""
           size="small"
           fullWidth={true}
@@ -35,7 +59,7 @@ export default function AppliedForm({}: Props) {
           <DemoContainer components={["DateTimePicker"]}>
             <DateTimePicker
               label="Datetime"
-              slotProps={{ textField: { size: "small" } }}
+              slotProps={{ textField: { size: "small", name: "datetime" } }}
               defaultValue={moment()}
             />
           </DemoContainer>
@@ -45,6 +69,7 @@ export default function AppliedForm({}: Props) {
           loadingPosition="start"
           startIcon={<SaveIcon />}
           variant="outlined"
+          type="submit"
         >
           Save
         </LoadingButton>
