@@ -18,11 +18,6 @@ export default function AppliedForm({}: Props) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(
-      data.get("company"),
-      data.get("position"),
-      data.get("datetime")
-    );
     saveApplied({
       id: 1,
       company: data.get("company") as string,

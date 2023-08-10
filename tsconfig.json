@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "noImplicitAny": true,
     "module": "NodeNext",
     "target": "es6",
@@ -11,5 +12,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "files": ["src/popup.tsx", "src/fullpage.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"]
 }
