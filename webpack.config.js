@@ -10,7 +10,7 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 const config = {
   entry: {
     popup: "./src/popup.tsx",
-    fullpage: "./src/fullpage.ts"
+    // fullpage: "./src/fullpage.ts"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -30,14 +30,14 @@ const config = {
       template: "extension_base/popup.html",
       chunks: ["popup"]
     }),
-    new HtmlWebpackPlugin({
-      filename: "fullpage.html",
-      template: "extension_base/fullpage.html",
-      chunks: ["fullpage"]
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: "fullpage.html",
+    //   template: "extension_base/fullpage.html",
+    //   chunks: ["fullpage"]
+    // }),
     new CopyPlugin({
       patterns: [
-        { from: "extension_base/icon-16.png", to: "" },
+        { from: "extension_base/icon-128.png", to: "" },
         { from: "extension_base/manifest.json", to: "" }
       ]
     }),
