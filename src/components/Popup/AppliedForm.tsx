@@ -10,7 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 // import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
-import { saveApplied } from "@/libs/jobUtil";
+import { saveApplied } from "@/libs/storage";
 
 type Props = {};
 

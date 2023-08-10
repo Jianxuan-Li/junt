@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./popup.css";
-import { fetchApplied } from "@/libs/jobUtil";
+import { fetchApplied } from "@/libs/storage";
 import AppliedForm from "./AppliedForm";
 
 type Props = {};

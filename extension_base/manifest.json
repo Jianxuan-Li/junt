@@ -1,7 +1,7 @@
 {
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
-  "version": "1.0",
+  "name": "Junt",
+  "description": "A extension to help you to hunt for jobs",
+  "version": "0.1.0",
   "manifest_version": 3,
   "permissions": ["scripting", "activeTab", "storage"],
   "action": {
