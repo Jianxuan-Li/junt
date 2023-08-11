@@ -49,16 +49,21 @@ export default function index({}: Props) {
       </Button>
       {!loading && (
         <div>
-          <TextField
-            id="outlined-basic"
-            label="Sheet ID"
-            variant="outlined"
-            defaultValue={sheetId}
-            onChange={handleSheetIdChange}
-          />
-          <Button variant="outlined" onClick={handleConnect}>
-            Connect to google sheet
-          </Button>
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="Sheet ID"
+              variant="outlined"
+              fullWidth={true}
+              defaultValue={sheetId}
+              onChange={handleSheetIdChange}
+            />
+          </div>
+          <div>
+            <Button variant="outlined" onClick={handleConnect}>
+              Connect to google sheet
+            </Button>
+          </div>
         </div>
       )}
       <div>

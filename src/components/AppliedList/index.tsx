@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { fetchApplied } from "@/libs/storage";
+import { fetchAppliedList } from "@/libs/sync";
 
 type Props = {};
 
@@ -7,13 +7,10 @@ export default function AppliedList({}: Props) {
   const [appliedList, setAppliedList] = React.useState([]);
 
   useEffect(() => {
-    fetchApplied().then((res) => {
-      console.log(res);
-      if (!res) {
-        return;
-      }
-      setAppliedList(res);
-    });
+    const getData = async () => {
+      setAppliedList(await fetchAppliedList());
+    };
+    getData();
   }, []);
 
   return (
