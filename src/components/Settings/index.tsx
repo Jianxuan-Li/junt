@@ -1,19 +1,40 @@
-import React from "react";
-import Button from "@mui/material/Button";
+import React, { useEffect } from "react";
+import { Button, TextField } from "@mui/material";
+import { sheetsApiGet } from "@/libs/sheetsApi";
+import { getFromSyncStorage } from "@/libs/storage";
 
 type Props = {};
 
 export default function index({}: Props) {
-  const handleConnect = () => {
-    chrome.identity.getAuthToken({ interactive: true }, function (token) {
-      if (chrome.runtime.lastError) {
-        alert(chrome.runtime.lastError.message);
-        return;
-      }
-      console.log(token);
-      // Use the token.
-    });
+  const [sheet, setSheet] = React.useState<any>(null);
+  const [sheetId, setSheetId] = React.useState<string>("");
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const handleConnect = async () => {
+    const res = await sheetsApiGet(`/${sheetId}`);
+    setSheet(res);
+
+    chrome.storage.sync.set({ sheetId });
+    chrome.storage.sync.set({ sheet: res });
   };
+
+  const handleSheetIdChange = (e: any) => {
+    setSheetId(e.target.value);
+  };
+
+  useEffect(() => {
+    // get sheet id and sheet from storage
+    const getData = async () => {
+      const [storedSheetId, storedSheet] = await Promise.all([
+        getFromSyncStorage("sheetId"),
+        getFromSyncStorage("sheet")
+      ]);
+
+      setSheetId(storedSheetId);
+      setSheet(storedSheet);
+      setLoading(false);
+    };
+    getData();
+  }, []);
 
   return (
     <div>
@@ -26,9 +47,23 @@ export default function index({}: Props) {
       >
         Clear data
       </Button>
-      <Button variant="outlined" onClick={handleConnect}>
-        Connect to google sheet
-      </Button>
+      {!loading && (
+        <div>
+          <TextField
+            id="outlined-basic"
+            label="Sheet ID"
+            variant="outlined"
+            defaultValue={sheetId}
+            onChange={handleSheetIdChange}
+          />
+          <Button variant="outlined" onClick={handleConnect}>
+            Connect to google sheet
+          </Button>
+        </div>
+      )}
+      <div>
+        <pre>{JSON.stringify(sheet, null, 2)}</pre>
+      </div>
     </div>
   );
 }

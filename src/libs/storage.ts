@@ -3,6 +3,7 @@ export type appliedJob = {
   title: string;
   company: string;
   datetime: string;
+  url?: string;
 };
 
 const storageKey = "applied";
@@ -34,6 +35,19 @@ export const saveApplied = (applied: appliedJob): Promise<void> => {
             return resolve();
           });
         }
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export const getFromSyncStorage = (key: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    try {
+      chrome.storage.sync.get([key], (result) => {
+        if (!result[key]) return resolve([]);
+        return resolve(result[key]);
       });
     } catch (e) {
       reject(e);
