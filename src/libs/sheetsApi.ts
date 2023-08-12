@@ -19,3 +19,21 @@ export const sheetsApiGet = async (url: string, params?: any) => {
   });
   return response.data;
 };
+
+export const sheetsApiPut = async (url: string, data: any) => {
+  const response = await sheetsApi.put(url, data, {
+    headers: {
+      Authorization: `Bearer ${await getGoogleAuthToken()}`
+    }
+  });
+  return response.data;
+};
+
+export const sheetsApiPost = async (url: string, data: any) => {
+  const response = await sheetsApi.post(url, data, {
+    headers: {
+      Authorization: `Bearer ${await getGoogleAuthToken()}`
+    }
+  });
+  return response.data;
+};
