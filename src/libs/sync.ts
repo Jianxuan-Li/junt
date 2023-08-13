@@ -41,8 +41,11 @@ export const shouldSync = async (): Promise<boolean> => {
 };
 
 export const fetchAppliedList = async (): Promise<appliedJob[]> => {
+  const sheetId = await getFromSyncStorage("sheetId");
+
+  if (!sheetId) return [];
+
   if (await shouldSync()) {
-    const sheetId = await getFromSyncStorage("sheetId");
     const appliedList = await getSheetData(sheetId, "A:D");
     renewLastSyncDatetime();
     return await fromSheetToLocal(appliedList);
