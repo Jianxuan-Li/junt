@@ -1,5 +1,7 @@
 import { sheetsApiGet, sheetsApiPost } from "./sheetsApi";
 
+export const DEFUALT_RANGE = "A:D";
+
 export const getSheetData = async (sheetId: string, range: string) => {
   const response = await sheetsApiGet(`${sheetId}/values/${range}`);
   return response.values;
@@ -26,6 +28,8 @@ export const appendSheetData = async (
     range,
     majorDimension: "ROWS",
     values
+  }, {
+    valueInputOption: "USER_ENTERED"
   });
   return response;
 };

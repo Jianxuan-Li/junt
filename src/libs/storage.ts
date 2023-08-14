@@ -1,5 +1,5 @@
 export type appliedJob = {
-  id: number;
+  id?: number;
   title: string;
   company: string;
   datetime: string;

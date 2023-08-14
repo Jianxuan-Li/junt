@@ -10,7 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 // import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
-import { saveApplied } from "@/libs/storage";
+import { appendAppliedJob } from "@/libs/sync";
 
 type Props = {};
 
@@ -18,8 +18,7 @@ export default function AppliedForm({}: Props) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    saveApplied({
-      id: 1,
+    appendAppliedJob({
       company: data.get("company") as string,
       title: data.get("position") as string,
       datetime: data.get("datetime") as string

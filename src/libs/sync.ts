@@ -1,12 +1,16 @@
 // Sync data from google sheet to local
 import moment from "moment";
-import { getSheetData } from "@/libs/sheetsUtil";
+import {
+  getSheetData,
+  DEFUALT_RANGE,
+  appendSheetData,
+} from "@/libs/sheetsUtil";
 import { saveAppliedList } from "./storage";
 import {
   saveToSyncStorage,
   getFromSyncStorage,
   appliedJob,
-  STORAGE_KEY
+  STORAGE_KEY,
 } from "./storage";
 
 export const fromSheetToLocal = async (sheetData: any) => {
@@ -16,7 +20,7 @@ export const fromSheetToLocal = async (sheetData: any) => {
       title: row[2],
       company: row[1],
       datetime: row[0],
-      url: row[3]
+      url: row[3],
     };
   });
   await saveAppliedList(appliedList);
@@ -46,10 +50,23 @@ export const fetchAppliedList = async (): Promise<appliedJob[]> => {
   if (!sheetId) return [];
 
   if (await shouldSync()) {
-    const appliedList = await getSheetData(sheetId, "A:D");
+    const appliedList = await getSheetData(sheetId, DEFUALT_RANGE);
     renewLastSyncDatetime();
     return await fromSheetToLocal(appliedList);
   } else {
     return await getFromSyncStorage(STORAGE_KEY);
   }
+};
+
+export const appendAppliedJob = async (job: appliedJob) => {
+  const sheetId = await getFromSyncStorage("sheetId");
+  if (!sheetId) return;
+
+  const appliedList = await getFromSyncStorage(STORAGE_KEY);
+  appliedList.push(job);
+  await saveToSyncStorage(STORAGE_KEY, appliedList);
+
+  const dt = moment(job.datetime).format("YYYY-MM-DD HH:mm:ss");
+  const values = [[dt, job.company, job.title, job.url]];
+  await appendSheetData(sheetId, DEFUALT_RANGE, values);
 };
