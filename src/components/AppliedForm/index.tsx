@@ -21,8 +21,10 @@ export default function AppliedForm({}: Props) {
     appendAppliedJob({
       company: data.get("company") as string,
       title: data.get("position") as string,
-      datetime: data.get("datetime") as string
+      datetime: data.get("datetime") as string,
     });
+
+    event.currentTarget.reset();
   };
 
   return (
