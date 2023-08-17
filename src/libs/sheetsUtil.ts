@@ -33,3 +33,45 @@ export const appendSheetData = async (sheetId: string, range: string, values: an
   )
   return response
 }
+
+/*
+https://developers.google.com/sheets/api/samples/rowcolumn#delete-rows-columns
+
+POST https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID:batchUpdate
+
+{
+  "requests": [
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": SHEET_ID,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 3
+        }
+      }
+    },
+  ],
+}
+*/
+export const deleteSheetRows = async (sheetId: string, index: number) => {
+  const response = await sheetsApiPost(
+    `${sheetId}:batchUpdate`,
+    {
+      requests: [
+        {
+          deleteDimension: {
+            range: {
+              sheetId,
+              dimension: 'ROWS',
+              startIndex: index,
+              endIndex: index,
+            },
+          },
+        },
+      ],
+    },
+    {},
+  )
+  return response
+}

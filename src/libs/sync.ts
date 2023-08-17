@@ -36,6 +36,9 @@ export const shouldSync = async (): Promise<boolean> => {
 }
 
 export const syncAppliedList = async () => {
+  /*
+  force sync applied list from google sheet to local storage
+  */
   const sheetId = await getFromSyncStorage('sheetId')
   if (!sheetId) return
 
@@ -46,6 +49,9 @@ export const syncAppliedList = async () => {
 }
 
 export const fetchAppliedList = async (): Promise<appliedJob[]> => {
+  /*
+  fetch applied list from local storage (cache) or google sheet
+  */
   const sheetId = await getFromSyncStorage('sheetId')
 
   if (!sheetId) return []

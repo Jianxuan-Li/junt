@@ -17,7 +17,7 @@ export default function AppliedList({}: Props) {
     <div>
       {appliedList.map((item, index) => (
         <div key={'applied_item_' + index}>
-          {item.company} - {item.title} - {item.datetime}
+          {item.company} {item.title && '-'} {item.title} {item.datetime && '-'} {item.datetime}
         </div>
       ))}
     </div>
