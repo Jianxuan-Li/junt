@@ -1,64 +1,52 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './popup.css'
 import AppliedFormTab from '../AppliedForm'
 import SettingsTab from '@/components/Settings'
 import AppliedListTab from '@/components/AppliedList'
 
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Box from '@mui/material/Box'
-
-interface TabPanelProps {
-  children?: React.ReactNode
-  index: number
-  value: number
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
-      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
-    </div>
-  )
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `tab-${index}`,
-    'aria-controls': `tabpanel-${index}`,
-  }
-}
+import NavButton from '@/components/common/NavButton'
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
+import CreateIcon from '@mui/icons-material/Create'
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
+import InfoIcon from '@mui/icons-material/Info'
 
 type Props = {}
 
 export default function Popup({}: Props) {
-  const [value, setValue] = React.useState(0)
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue)
-  }
+  const [tab, setTab] = React.useState(0)
 
   return (
     <div className="base">
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Applied" {...a11yProps(0)} />
-            <Tab label="Manually Add" {...a11yProps(1)} />
-            <Tab label="Settings" {...a11yProps(2)} />
-          </Tabs>
-        </Box>
-        <CustomTabPanel value={value} index={0}>
-          <AppliedListTab />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <AppliedFormTab />
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <SettingsTab />
-        </CustomTabPanel>
-      </Box>
+      <div className="header">
+        <div className="title">Junt</div>
+        <div className="rightNav">
+          <div className="navItem">
+            <NavButton onClick={() => setTab(0)}>
+              <FormatListNumberedIcon />
+            </NavButton>
+          </div>
+          <div className="navItem">
+            <NavButton onClick={() => setTab(1)}>
+              <CreateIcon />
+            </NavButton>
+          </div>
+          <div className="navItem">
+            <NavButton onClick={() => setTab(2)}>
+              <SettingsSuggestIcon />
+            </NavButton>
+          </div>
+          <div className="navItem">
+            <NavButton onClick={() => setTab(3)}>
+              <InfoIcon />
+            </NavButton>
+          </div>
+        </div>
+      </div>
+      <div className="content">
+        {tab === 0 && <AppliedListTab />}
+        {tab === 1 && <AppliedFormTab />}
+        {tab === 2 && <SettingsTab />}
+      </div>
     </div>
   )
 }
