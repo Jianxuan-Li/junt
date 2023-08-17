@@ -1,17 +1,8 @@
 // Sync data from google sheet to local
-import moment from "moment";
-import {
-  getSheetData,
-  DEFUALT_RANGE,
-  appendSheetData,
-} from "@/libs/sheetsUtil";
-import { saveAppliedList } from "./storage";
-import {
-  saveToSyncStorage,
-  getFromSyncStorage,
-  appliedJob,
-  STORAGE_KEY,
-} from "./storage";
+import moment from 'moment'
+import { getSheetData, DEFUALT_RANGE, appendSheetData } from '@/libs/sheetsUtil'
+import { saveAppliedList } from './storage'
+import { saveToSyncStorage, getFromSyncStorage, appliedJob, STORAGE_KEY } from './storage'
 
 export const fromSheetToLocal = async (sheetData: any) => {
   const appliedList = sheetData.map((row: any[], index: number) => {
@@ -21,52 +12,62 @@ export const fromSheetToLocal = async (sheetData: any) => {
       company: row[1],
       datetime: row[0],
       url: row[3],
-    };
-  });
-  await saveAppliedList(appliedList);
-  return appliedList;
-};
+    }
+  })
+  await saveAppliedList(appliedList)
+  return appliedList
+}
 
 export const renewLastSyncDatetime = async () => {
-  await saveToSyncStorage("lastSyncDatetime", moment().format());
-};
+  await saveToSyncStorage('lastSyncDatetime', moment().format())
+}
 
 export const getLastSyncDatetime = async (): Promise<string> => {
-  return await getFromSyncStorage("lastSyncDatetime");
-};
+  return await getFromSyncStorage('lastSyncDatetime')
+}
 
 export const shouldSync = async (): Promise<boolean> => {
-  const lastSyncDatetime = await getLastSyncDatetime();
-  if (!lastSyncDatetime) return true;
-  const lastSync = moment(lastSyncDatetime);
-  const now = moment();
-  const diff = now.diff(lastSync, "hours");
-  return diff > 1;
-};
+  const lastSyncDatetime = await getLastSyncDatetime()
+  if (!lastSyncDatetime) return true
+  const lastSync = moment(lastSyncDatetime)
+  const now = moment()
+  const diff = now.diff(lastSync, 'minutes')
+  return diff > 5
+}
+
+export const syncAppliedList = async () => {
+  const sheetId = await getFromSyncStorage('sheetId')
+  if (!sheetId) return
+
+  const appliedList = await getSheetData(sheetId, DEFUALT_RANGE)
+  renewLastSyncDatetime()
+  await fromSheetToLocal(appliedList)
+  return true
+}
 
 export const fetchAppliedList = async (): Promise<appliedJob[]> => {
-  const sheetId = await getFromSyncStorage("sheetId");
+  const sheetId = await getFromSyncStorage('sheetId')
 
-  if (!sheetId) return [];
+  if (!sheetId) return []
 
   if (await shouldSync()) {
-    const appliedList = await getSheetData(sheetId, DEFUALT_RANGE);
-    renewLastSyncDatetime();
-    return await fromSheetToLocal(appliedList);
+    const appliedList = await getSheetData(sheetId, DEFUALT_RANGE)
+    renewLastSyncDatetime()
+    return await fromSheetToLocal(appliedList)
   } else {
-    return await getFromSyncStorage(STORAGE_KEY);
+    return await getFromSyncStorage(STORAGE_KEY)
   }
-};
+}
 
 export const appendAppliedJob = async (job: appliedJob) => {
-  const sheetId = await getFromSyncStorage("sheetId");
-  if (!sheetId) return;
+  const sheetId = await getFromSyncStorage('sheetId')
+  if (!sheetId) return
 
-  const appliedList = await getFromSyncStorage(STORAGE_KEY);
-  appliedList.push(job);
-  await saveToSyncStorage(STORAGE_KEY, appliedList);
+  const appliedList = await getFromSyncStorage(STORAGE_KEY)
+  appliedList.push(job)
+  await saveToSyncStorage(STORAGE_KEY, appliedList)
 
-  const dt = moment(job.datetime).format("YYYY-MM-DD HH:mm:ss");
-  const values = [[dt, job.company, job.title, job.url]];
-  await appendSheetData(sheetId, DEFUALT_RANGE, values);
-};
+  const dt = moment(job.datetime).format('YYYY-MM-DD HH:mm:ss')
+  const values = [[dt, job.company, job.title, job.url]]
+  await appendSheetData(sheetId, DEFUALT_RANGE, values)
+}
