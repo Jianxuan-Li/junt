@@ -27,11 +27,11 @@ export default function Popup({}: Props) {
       <div className="header">
         <div className="title">Junt</div>
         <div className="rightNav">
-          <div className="navItem">
+          {tab === 0 && <div className="navItem">
             <NavButton onClick={() => handleSync()}>
               <CachedIcon />
             </NavButton>
-          </div>
+          </div>}
           <div className="navItem">
             <NavButton onClick={() => setTab(0)}>
               <FormatListNumberedIcon />
