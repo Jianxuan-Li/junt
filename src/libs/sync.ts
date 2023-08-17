@@ -1,7 +1,7 @@
 // Sync data from google sheet to local
 import { appliedJob } from '@/types'
 import moment from 'moment'
-import { getSheetData, DEFUALT_RANGE, appendSheetData } from '@/libs/sheetsUtil'
+import { getSheetData, DEFUALT_RANGE, appendSheetData, sortSheetRows } from '@/libs/sheetsUtil'
 import { saveAppliedList } from './storage'
 import { saveToSyncStorage, getFromSyncStorage, STORAGE_KEY } from './storage'
 import trie, { initTrie } from './searchUtil'
@@ -85,4 +85,5 @@ export const appendAppliedJob = async (job: appliedJob) => {
   const dt = moment(job.datetime).format('YYYY-MM-DD HH:mm:ss')
   const values = [[dt, job.company, job.title, job.url]]
   await appendSheetData(sheetId, DEFUALT_RANGE, values)
+  await sortSheetRows(sheetId)
 }

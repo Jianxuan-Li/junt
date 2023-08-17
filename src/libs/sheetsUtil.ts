@@ -29,6 +29,7 @@ export const appendSheetData = async (sheetId: string, range: string, values: an
     },
     {
       valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
     },
   )
   return response
@@ -62,11 +63,71 @@ export const deleteSheetRows = async (sheetId: string, index: number) => {
         {
           deleteDimension: {
             range: {
-              sheetId,
+              sheetId: 0,
               dimension: 'ROWS',
               startIndex: index,
               endIndex: index,
             },
+          },
+        },
+      ],
+    },
+    {},
+  )
+  return response
+}
+
+/*
+sort by column 0 (datetime) ASCENDING, column 1 (company) DESCENDING
+POST https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID:batchUpdate
+{
+  "requests": [
+    {
+      "sortRange": {
+        "range": {
+          "sheetId": SHEET_ID,
+          "startRowIndex": 0,
+          "endRowIndex": 10,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        },
+        "sortSpecs": [
+          {
+            "dimensionIndex": 0,
+            "sortOrder": "ASCENDING"
+          },
+          {
+            "dimensionIndex": 1,
+            "sortOrder": "DESCENDING"
+          },
+        ]
+      }
+    }
+  ]
+}
+*/
+
+export const sortSheetRows = async (sheetId: string) => {
+  const response = await sheetsApiPost(
+    `${sheetId}:batchUpdate`,
+    {
+      requests: [
+        {
+          sortRange: {
+            range: {
+              sheetId: 0,
+              startRowIndex: 0,
+            },
+            sortSpecs: [
+              {
+                dimensionIndex: 0,
+                sortOrder: 'DESCENDING',
+              },
+              {
+                dimensionIndex: 1,
+                sortOrder: 'ASCENDING',
+              },
+            ],
           },
         },
       ],
