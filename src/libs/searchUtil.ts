@@ -75,7 +75,13 @@ class Trie {
 
 const trie = new Trie()
 
+export const clearTrie = () => {
+  trie.root = new TrieNode()
+}
+
 export const initTrie = (appliedList: appliedJob[]) => {
+  clearTrie()
+
   appliedList.forEach((job) => {
     trie.insert(job.company, job.id)
   })
