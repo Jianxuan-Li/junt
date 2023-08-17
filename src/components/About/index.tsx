@@ -1,5 +1,6 @@
 import React from 'react'
 import './index.css'
+import a1 from './images/a1.png'
 
 type Props = {}
 
@@ -22,6 +23,17 @@ export default function About({}: Props) {
         <a href="https://github.com/Jianxuan-Li/junt/issues" title="github" target="_blank">
         https://github.com/Jianxuan-Li/junt/issues
         </a>
+      </p>
+      <h1>How to organize data in your google sheets</h1>
+      <p>If you google sheet is empty, Junt will organizes it</p>
+      <p>If you have history data, please format it in to the following form:</p>
+      <p>column A: Date or Datetime</p>
+      <p>column B: Company name</p>
+      <p>column C: Job title</p>
+      <p>column D: Job link</p>
+      <p>Example:</p>
+      <p>
+        <img src={a1} alt="a1" />
       </p>
     </div>
   )
