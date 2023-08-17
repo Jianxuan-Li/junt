@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import { Button, TextField } from '@mui/material'
 import { sheetsApiGet } from '@/libs/sheetsApi'
 import { getFromSyncStorage } from '@/libs/storage'
+import './index.css'
+
+import FindSheetsId from './FindSheetsId'
 
 type Props = {}
 
@@ -30,6 +33,7 @@ export default function index({}: Props) {
       ])
 
       setSheetId(storedSheetId)
+      console.log(storedSheetId)
       setSheet(storedSheet)
       setLoading(false)
     }
@@ -37,17 +41,8 @@ export default function index({}: Props) {
   }, [])
 
   return (
-    <div>
-      <Button
-        variant="outlined"
-        onClick={() => {
-          chrome.storage.local.clear()
-          chrome.storage.sync.clear()
-        }}
-      >
-        Clear data
-      </Button>
-      {!loading && (
+    <div className="settings">
+      {!loading && !sheet && (
         <div>
           <div>
             <TextField
@@ -64,11 +59,29 @@ export default function index({}: Props) {
               Connect to google sheet
             </Button>
           </div>
+          <div className='helpFindSheetId'>
+            <FindSheetsId />
+          </div>
         </div>
       )}
-      <div>
-        <pre>{JSON.stringify(sheet, null, 2)}</pre>
-      </div>
+
+      {!loading && sheet !== null && (
+        <div className="connectedInfo">Connected to your google sheets: {sheet.properties.title}</div>
+      )}
+
+      {!loading && sheet !== null && (
+        <Button
+          variant="outlined"
+          onClick={() => {
+            chrome.storage.local.clear()
+            chrome.storage.sync.clear()
+            setSheetId('')
+            setSheet(null)
+          }}
+        >
+          Disconnect the google sheets and Clear data
+        </Button>
+      )}
     </div>
   )
 }

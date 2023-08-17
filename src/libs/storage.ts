@@ -1,4 +1,4 @@
-import { appliedJob } from '@/types'
+import { appliedJob } from '@/types/appliedJob'
 
 export const STORAGE_KEY = 'applied'
 

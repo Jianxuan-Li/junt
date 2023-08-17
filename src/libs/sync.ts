@@ -1,5 +1,5 @@
 // Sync data from google sheet to local
-import { appliedJob } from '@/types'
+import { appliedJob } from '@/types/appliedJob'
 import moment from 'moment'
 import { getSheetData, DEFUALT_RANGE, appendSheetData, sortSheetRows } from '@/libs/sheetsUtil'
 import { saveAppliedList } from './storage'

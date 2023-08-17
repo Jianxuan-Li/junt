@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { fetchAppliedList } from '@/libs/sync'
-import { appliedJob } from '@/types'
+import { appliedJob } from '@/types/appliedJob'
 import moment from 'moment'
 import './index.css'
 import SearchBar from './SearchBar'

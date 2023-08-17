@@ -1,0 +1,13 @@
+.settings {
+  width: 100%;
+  padding: 5px;
+}
+
+.connectedInfo {
+  font-size: 0.8rem;
+  line-height: 1.5rem;
+}
+
+.helpFindSheetId img {
+  max-width: 100%;
+}

@@ -1,5 +1,5 @@
 /* use trie to search */
-import { appliedJob } from '@/types'
+import { appliedJob } from '@/types/appliedJob'
 
 class TrieNode {
   children: Map<string, TrieNode>
