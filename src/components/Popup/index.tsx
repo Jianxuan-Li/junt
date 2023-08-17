@@ -16,9 +16,10 @@ type Props = {}
 
 export default function Popup({}: Props) {
   const [tab, setTab] = React.useState(0)
+  const [defaultAppliedList, setDefaultAppliedList] = React.useState([])
 
   const handleSync = async () => {
-    await syncAppliedList()
+    setDefaultAppliedList(await syncAppliedList())
   }
 
   return (
@@ -54,7 +55,7 @@ export default function Popup({}: Props) {
         </div>
       </div>
       <div className="content">
-        {tab === 0 && <AppliedListTab />}
+        {tab === 0 && <AppliedListTab defaultAppliedList={defaultAppliedList} />}
         {tab === 1 && <AppliedFormTab />}
         {tab === 2 && <SettingsTab />}
       </div>
