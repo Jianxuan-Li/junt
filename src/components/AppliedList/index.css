@@ -1,5 +1,8 @@
 .applied {
   overflow: hidden;
+  width: 100%;
+  height: 550px;
+  position: relative;
 }
 
 .applied .searchBar {
@@ -13,6 +16,10 @@
   /* liner gradient */
   background: linear-gradient(98deg, #e5e9ea, #d0cfcf 43%, #ddf7eb 58%, #a4ae8f 76%);
   position: relative;
+  /* fixed to top */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .applied .searchBar .searchInput {
@@ -41,14 +48,14 @@
   right: 20px;
 }
 
-.appliedList {
+.applied .appliedList {
   margin: 5px;
-  max-height: 500px;
+  height: 500px;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-.appliedItem {
+.applied .appliedItem {
   line-height: 1.25rem;
   font-size: 0.8rem;
 }

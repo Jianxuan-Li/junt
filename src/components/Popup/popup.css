@@ -22,6 +22,11 @@
   padding: 0 10px;
   /* liner gradient */
   background: linear-gradient(130deg, #0b89ac, #b83354 43%, #3aa571 58%, #319197 76%);
+  
+  /* fixed to top */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .header .title {
