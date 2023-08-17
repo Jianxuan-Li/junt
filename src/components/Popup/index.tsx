@@ -9,17 +9,28 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
 import CreateIcon from '@mui/icons-material/Create'
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
 import InfoIcon from '@mui/icons-material/Info'
+import CachedIcon from '@mui/icons-material/Cached'
+import { syncAppliedList } from '@/libs/sync'
 
 type Props = {}
 
 export default function Popup({}: Props) {
   const [tab, setTab] = React.useState(0)
 
+  const handleSync = async () => {
+    await syncAppliedList()
+  }
+
   return (
     <div className="base">
       <div className="header">
         <div className="title">Junt</div>
         <div className="rightNav">
+          <div className="navItem">
+            <NavButton onClick={() => handleSync()}>
+              <CachedIcon />
+            </NavButton>
+          </div>
           <div className="navItem">
             <NavButton onClick={() => setTab(0)}>
               <FormatListNumberedIcon />

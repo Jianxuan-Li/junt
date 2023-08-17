@@ -1,10 +1,4 @@
-export type appliedJob = {
-  id?: number
-  title: string
-  company: string
-  datetime: string
-  url?: string
-}
+import { appliedJob } from '@/types'
 
 export const STORAGE_KEY = 'applied'
 
