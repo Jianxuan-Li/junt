@@ -1,11 +1,11 @@
-import { sheetsApiGet, sheetsApiPost } from "./sheetsApi";
+import { sheetsApiGet, sheetsApiPost } from './sheetsApi'
 
-export const DEFUALT_RANGE = "A:D";
+export const DEFUALT_RANGE = 'A:D'
 
 export const getSheetData = async (sheetId: string, range: string) => {
-  const response = await sheetsApiGet(`${sheetId}/values/${range}`);
-  return response.values;
-};
+  const response = await sheetsApiGet(`${sheetId}/values/${range}`)
+  return response.values
+}
 
 /*
 POST https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!A1:E1:append?valueInputOption=VALUE_INPUT_OPTION
@@ -19,17 +19,17 @@ POST https://sheets.googleapis.com/v4/spreadsheets/SPREADSHEET_ID/values/Sheet1!
   ],
 }
 */
-export const appendSheetData = async (
-  sheetId: string,
-  range: string,
-  values: any[][]
-) => {
-  const response = await sheetsApiPost(`${sheetId}/values/${range}:append`, {
-    range,
-    majorDimension: "ROWS",
-    values
-  }, {
-    valueInputOption: "USER_ENTERED"
-  });
-  return response;
-};
+export const appendSheetData = async (sheetId: string, range: string, values: any[][]) => {
+  const response = await sheetsApiPost(
+    `${sheetId}/values/${range}:append`,
+    {
+      range,
+      majorDimension: 'ROWS',
+      values,
+    },
+    {
+      valueInputOption: 'USER_ENTERED',
+    },
+  )
+  return response
+}

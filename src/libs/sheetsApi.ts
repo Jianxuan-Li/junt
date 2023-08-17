@@ -1,14 +1,14 @@
-import axios from "axios";
-import { getGoogleAuthToken } from "./auth";
+import axios from 'axios'
+import { getGoogleAuthToken } from './auth'
 
 const sheetsApi = axios.create({
-  baseURL: "https://sheets.googleapis.com/v4/spreadsheets",
+  baseURL: 'https://sheets.googleapis.com/v4/spreadsheets',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
-});
+})
 
-export default sheetsApi;
+export default sheetsApi
 
 export const sheetsApiGet = async (url: string, params?: any) => {
   const response = await sheetsApi.get(url, {
@@ -16,30 +16,26 @@ export const sheetsApiGet = async (url: string, params?: any) => {
     headers: {
       Authorization: `Bearer ${await getGoogleAuthToken()}`,
     },
-  });
-  return response.data;
-};
+  })
+  return response.data
+}
 
 export const sheetsApiPut = async (url: string, data: any) => {
   const response = await sheetsApi.put(url, data, {
     headers: {
       Authorization: `Bearer ${await getGoogleAuthToken()}`,
     },
-  });
-  return response.data;
-};
+  })
+  return response.data
+}
 
-export const sheetsApiPost = async (
-  url: string,
-  data: any,
-  params: any = {}
-) => {
+export const sheetsApiPost = async (url: string, data: any, params: any = {}) => {
   const options = {
     headers: {
       Authorization: `Bearer ${await getGoogleAuthToken()}`,
     },
     params,
-  };
-  const response = await sheetsApi.post(url, data, options);
-  return response.data;
-};
+  }
+  const response = await sheetsApi.post(url, data, options)
+  return response.data
+}
