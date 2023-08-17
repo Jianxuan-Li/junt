@@ -33,7 +33,6 @@ export default function index({}: Props) {
       ])
 
       setSheetId(storedSheetId)
-      console.log(storedSheetId)
       setSheet(storedSheet)
       setLoading(false)
     }
