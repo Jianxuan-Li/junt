@@ -29,6 +29,7 @@ export default function AppliedForm({}: Props) {
 
   return (
     <Box autoComplete="off" component="form" sx={{ width: '100%' }} onSubmit={handleSubmit}>
+      <h1>Manually save to applied</h1>
       <FormControl fullWidth={true}>
         <TextField
           label="Company Name"

@@ -3,6 +3,7 @@ import './popup.css'
 import AppliedFormTab from '../AppliedForm'
 import SettingsTab from '@/components/Settings'
 import AppliedListTab from '@/components/AppliedList'
+import AboutTab from '@/components/About'
 
 import NavButton from '@/components/common/NavButton'
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
@@ -58,6 +59,7 @@ export default function Popup({}: Props) {
         {tab === 0 && <AppliedListTab defaultAppliedList={defaultAppliedList} />}
         {tab === 1 && <AppliedFormTab />}
         {tab === 2 && <SettingsTab />}
+        {tab === 3 && <AboutTab />}
       </div>
     </div>
   )
