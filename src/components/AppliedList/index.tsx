@@ -46,13 +46,14 @@ export default function AppliedList({ defaultAppliedList, onAppliedListLoading, 
       setAppliedList(originalAppliedList)
       return
     }
+
     if (ids.length === 0) {
       setAppliedList([])
       return
     }
     const idMap = new Map()
     ids.forEach((id) => idMap.set(id, true))
-    const result = appliedList.filter((item) => idMap.has(item.id))
+    const result = originalAppliedList.filter((item) => idMap.has(item.id))
     setAppliedList(result)
   }
 
