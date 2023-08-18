@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { Button, TextField } from '@mui/material'
 import { sheetsApiGet } from '@/libs/sheetsApi'
 import { getFromSyncStorage } from '@/libs/storage'
 import './index.css'
+import ConnectButton from './ConnectButton'
+import DisconnectButton from './DisconnectButton'
 
 import FindSheetsId from './FindSheetsId'
 
@@ -42,23 +43,22 @@ export default function index({}: Props) {
   return (
     <div className="settings">
       {!loading && !sheet && (
-        <div>
+        <div className="connect">
           <div>
-            <TextField
-              id="outlined-basic"
-              label="Sheet ID"
-              variant="outlined"
-              fullWidth={true}
-              defaultValue={sheetId}
+            <h1>Connect to your google sheet</h1>
+          </div>
+          <div className="connectionForm">
+            <input
+              className="sheetIdInput"
+              type="text"
+              aria-label="Sheet ID"
+              placeholder="Sheet ID"
+              value={sheetId}
               onChange={handleSheetIdChange}
             />
+            <ConnectButton onClick={handleConnect} />
           </div>
-          <div>
-            <Button variant="outlined" onClick={handleConnect}>
-              Connect to google sheet
-            </Button>
-          </div>
-          <div className='helpFindSheetId'>
+          <div className="helpFindSheetId">
             <FindSheetsId />
           </div>
         </div>
@@ -69,17 +69,14 @@ export default function index({}: Props) {
       )}
 
       {!loading && sheet !== null && (
-        <Button
-          variant="outlined"
+        <DisconnectButton
           onClick={() => {
             chrome.storage.local.clear()
             chrome.storage.sync.clear()
             setSheetId('')
             setSheet(null)
           }}
-        >
-          Disconnect the google sheets and Clear data
-        </Button>
+        />
       )}
     </div>
   )

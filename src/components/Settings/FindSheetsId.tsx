@@ -8,7 +8,12 @@ export default function FindSheetsId({}: Props) {
   return (
     <div>
       <h1>Find your Google Sheets ID</h1>
-      <p>First, go to your google sheets: https://docs.google.com/spreadsheets/</p>
+      <p>
+        First, go to your google sheets:{' '}
+        <a href="https://docs.google.com/spreadsheets/" target="_blank">
+          https://docs.google.com/spreadsheets/
+        </a>
+      </p>
       <p>Then, create a new sheet for job applications or using existing one</p>
       <p>
         <img src={s1} />

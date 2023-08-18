@@ -3,11 +3,38 @@
   padding: 5px;
 }
 
+.settings h1{
+  font-size: 1.2rem;
+}
+
 .connectedInfo {
-  font-size: 0.8rem;
+  font-size: 1rem;
   line-height: 1.5rem;
 }
 
 .helpFindSheetId img {
   max-width: 100%;
+}
+
+.settings .connect{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.sheetIdInput{
+  width: auto;
+  margin: 0 5px 0 0;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  padding: 10px 10px;
+  width: 100%;
+  box-shadow: 0 0 5px #c4c4c4;
+}
+
+.connectionForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

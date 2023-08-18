@@ -58,4 +58,5 @@
 .applied .appliedItem {
   line-height: 1.25rem;
   font-size: 0.8rem;
+  font-family: 'Roboto Mono', monospace;
 }
