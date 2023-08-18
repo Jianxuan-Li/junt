@@ -42,11 +42,17 @@ export default function Popup({ onAppliedListLoaded }: Props) {
 
   return (
     <div className="base">
-      <div className={sheetInfoLoading || loading ? 'fullPageLoading' : 'fullPageLoading fullPageLoadingFadeout'}></div>
+      <div
+        className={
+          (!sheetInfo && tab == 0) || sheetInfoLoading || loading
+            ? 'fullPageLoading'
+            : 'fullPageLoading fullPageLoadingFadeout'
+        }
+      ></div>
       <div className="header">
         <div className="title">Junt</div>
         <div className="rightNav">
-          {tab === 0 && (
+          {tab === 0 && sheetInfo && (
             <div className="navItem">
               <NavButton onClick={() => handleSync()}>
                 <CachedIcon />

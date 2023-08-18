@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { sheetsApiGet } from '@/libs/sheetsApi'
 import { getFromSyncStorage } from '@/libs/storage'
+import { SheetInfoContext } from '@/context/SheetInfoContext'
 import './index.css'
 import ConnectButton from './ConnectButton'
 import DisconnectButton from './DisconnectButton'
-
 import FindSheetsId from './FindSheetsId'
 
 type Props = {}
@@ -13,12 +13,16 @@ export default function index({}: Props) {
   const [sheet, setSheet] = React.useState<any>(null)
   const [sheetId, setSheetId] = React.useState<string>('')
   const [loading, setLoading] = React.useState<boolean>(true)
+
+  const { setSheetInfo } = React.useContext(SheetInfoContext)
+
   const handleConnect = async () => {
     const res = await sheetsApiGet(`/${sheetId}`)
     setSheet(res)
 
     chrome.storage.sync.set({ sheetId })
     chrome.storage.sync.set({ sheet: res })
+    setSheetInfo(res)
   }
 
   const handleSheetIdChange = (e: any) => {
@@ -75,6 +79,7 @@ export default function index({}: Props) {
             chrome.storage.sync.clear()
             setSheetId('')
             setSheet(null)
+            setSheetInfo(null)
           }}
         />
       )}
