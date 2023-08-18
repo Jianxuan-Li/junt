@@ -7,6 +7,8 @@ import SearchBar from './SearchBar'
 
 type Props = {
   defaultAppliedList?: appliedJob[]
+  onAppliedListLoading?: () => void
+  onAppliedListLoaded?: () => void
 }
 
 const formattedDateTime = (datetime: string) => {
@@ -19,13 +21,15 @@ const formattedDateTime = (datetime: string) => {
 
 let originalAppliedList: appliedJob[] = []
 
-export default function AppliedList({ defaultAppliedList }: Props) {
+export default function AppliedList({ defaultAppliedList, onAppliedListLoading, onAppliedListLoaded }: Props) {
   const [appliedList, setAppliedList] = React.useState([])
 
   useEffect(() => {
     const getData = async () => {
+      onAppliedListLoading && onAppliedListLoading()
       originalAppliedList = await fetchAppliedList()
       setAppliedList(originalAppliedList)
+      onAppliedListLoaded && onAppliedListLoaded()
     }
     getData()
   }, [])
@@ -37,9 +41,13 @@ export default function AppliedList({ defaultAppliedList }: Props) {
     }
   }, [defaultAppliedList])
 
-  const handleSearchedResult = (ids: number[]) => {
-    if (ids.length === 0) {
+  const handleSearchedResult = (ids: number[], keyword: string) => {
+    if (ids.length === 0 && keyword === '') {
       setAppliedList(originalAppliedList)
+      return
+    }
+    if (ids.length === 0) {
+      setAppliedList([])
       return
     }
     const idMap = new Map()

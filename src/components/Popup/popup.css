@@ -1,3 +1,5 @@
+@import url(./keyframes.css);
+
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +14,26 @@
   overflow-x: hidden;
 }
 
+.base div.fullPageLoading {
+  position: absolute;
+  z-index: -999;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
+    linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+    linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
+  animation: loadingBackgroundSpinning 5s ease infinite;
+}
+
+.base div.fullPageLoadingFadeout {
+  animation: fadeOut 1s ease forwards;
+}
+
 .header {
   width: 100%;
   height: 50px;
@@ -22,7 +44,7 @@
   padding: 0 10px;
   /* liner gradient */
   background: linear-gradient(130deg, #0b89ac, #b83354 43%, #3aa571 58%, #319197 76%);
-  
+
   /* fixed to top */
   position: sticky;
   top: 0;
@@ -32,7 +54,7 @@
 .header .title {
   font-size: 20px;
   font-weight: 600;
-  color: #FFF;
+  color: #fff;
 }
 
 .header .rightNav {

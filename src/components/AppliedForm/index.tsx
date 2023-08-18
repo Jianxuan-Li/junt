@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import moment from 'moment'
 import Stack from '@mui/material/Stack'
 import { Box } from '@mui/material'
@@ -11,6 +11,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
 import { appendAppliedJob } from '@/libs/sync'
+import { SheetInfoContext } from '@/context/SheetInfoContext'
+
 import './index.css'
 
 import Snackbar from '@mui/material/Snackbar'
@@ -27,6 +29,7 @@ export default function AppliedForm({}: Props) {
   const [company, setCompany] = React.useState('')
   const [position, setPosition] = React.useState('')
   const [url, setUrl] = React.useState('')
+  const { sheetInfo } = useContext(SheetInfoContext)
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -79,6 +82,14 @@ export default function AppliedForm({}: Props) {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (!sheetInfo) {
+      setMessage('Please setup your sheet first!')
+      setAlertType('warning')
+      setOpen(true)
+      return
+    }
+
     setLoading(true)
     const data = new FormData(event.currentTarget)
     await appendAppliedJob({
@@ -92,11 +103,15 @@ export default function AppliedForm({}: Props) {
     setPosition('')
     setUrl('')
 
+    setMessage('Application saved!')
+    setAlertType('success')
     setOpen(true)
     setLoading(false)
   }
 
   const [open, setOpen] = React.useState(false)
+  const [alertType, setAlertType] = React.useState<'success' | 'warning'>('success')
+  const [message, setMessage] = React.useState('Application saved!')
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -115,6 +130,7 @@ export default function AppliedForm({}: Props) {
             <TextField
               label="Company Name"
               name="company"
+              required={true}
               value={company}
               onChange={(e) => setCompany(e.target.value)}
               size="small"
@@ -160,8 +176,8 @@ export default function AppliedForm({}: Props) {
           </Stack>
         </FormControl>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            Application saved!
+          <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
+            {message}
           </Alert>
         </Snackbar>
       </Box>
