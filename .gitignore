@@ -1,4 +1,5 @@
 .DS_Store
+extension_base/manifest.json
 
 # Logs
 logs
