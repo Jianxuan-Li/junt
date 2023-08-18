@@ -2,9 +2,14 @@
 import { appliedJob } from '@/types/appliedJob'
 import moment from 'moment'
 import { getSheetData, DEFUALT_RANGE, appendSheetData, sortSheetRows } from '@/libs/sheetsUtil'
-import { saveAppliedList } from './storage'
-import { saveToSyncStorage, getFromSyncStorage, STORAGE_KEY } from './storage'
+import { saveApplied, saveAppliedList, getAppliedList } from './storage'
+import { getFromSyncStorage, getFromLocalStorage, saveToLocalStorage } from './storage'
 import trie, { initTrie } from './searchUtil'
+import {
+  STORAGE_KEY_APPLIED_LIST_LENGTH,
+  STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME,
+  SYNC_STORAGE_KEY_SHEET_ID,
+} from '@/constants/storage'
 
 export const fromSheetToLocal = async (sheetData: any) => {
   const appliedList = sheetData.map((row: any[], index: number) => {
@@ -21,11 +26,11 @@ export const fromSheetToLocal = async (sheetData: any) => {
 }
 
 export const renewLastSyncDatetime = async () => {
-  await saveToSyncStorage('lastSyncDatetime', moment().format())
+  await saveToLocalStorage(STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME, moment().format())
 }
 
 export const getLastSyncDatetime = async (): Promise<string> => {
-  return await getFromSyncStorage('lastSyncDatetime')
+  return await getFromLocalStorage(STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME)
 }
 
 export const shouldSync = async (): Promise<boolean> => {
@@ -41,12 +46,13 @@ export const syncAppliedList = async (): Promise<appliedJob[]> => {
   /*
   force sync applied list from google sheet to local storage
   */
-  const sheetId = await getFromSyncStorage('sheetId')
+  const sheetId = await getFromSyncStorage(SYNC_STORAGE_KEY_SHEET_ID)
   if (!sheetId) return
 
   const appliedList = await getSheetData(sheetId, DEFUALT_RANGE)
   renewLastSyncDatetime()
   const transedList = await fromSheetToLocal(appliedList)
+  await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST_LENGTH, transedList.length)
   initTrie(transedList)
   return transedList
 }
@@ -55,8 +61,7 @@ export const fetchAppliedList = async (): Promise<appliedJob[]> => {
   /*
   fetch applied list from local storage (cache) or google sheet
   */
-  const sheetId = await getFromSyncStorage('sheetId')
-
+  const sheetId = await getFromSyncStorage(SYNC_STORAGE_KEY_SHEET_ID)
   if (!sheetId) return []
 
   let transedList: appliedJob[] = []
@@ -65,21 +70,20 @@ export const fetchAppliedList = async (): Promise<appliedJob[]> => {
     renewLastSyncDatetime()
     transedList = await fromSheetToLocal(appliedList)
   } else {
-    transedList = await getFromSyncStorage(STORAGE_KEY)
+    transedList = await getAppliedList()
   }
-
+  await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST_LENGTH, transedList.length)
   initTrie(transedList)
   return transedList
 }
 
 export const appendAppliedJob = async (job: appliedJob) => {
-  const sheetId = await getFromSyncStorage('sheetId')
+  const sheetId = await getFromSyncStorage(SYNC_STORAGE_KEY_SHEET_ID)
   if (!sheetId) return
 
-  const appliedList = await getFromSyncStorage(STORAGE_KEY)
-  job.id = appliedList.length
-  appliedList.push(job)
-  await saveToSyncStorage(STORAGE_KEY, appliedList)
+  const currentLength = await getFromLocalStorage(STORAGE_KEY_APPLIED_LIST_LENGTH)
+  job.id = currentLength
+  saveApplied(job)
   trie.insert(job.company, job.id)
 
   const dt = moment(job.datetime).format('YYYY-MM-DD HH:mm:ss')

@@ -1,19 +1,23 @@
 import { appliedJob } from '@/types/appliedJob'
+import { STORAGE_KEY_APPLIED_LIST } from '@/constants/storage'
 
-export const STORAGE_KEY = 'applied'
-
-export const saveApplied = async (applied: appliedJob): Promise<void> => {
-  const appliedList = await getFromSyncStorage(STORAGE_KEY)
+export const saveApplied = async (job: appliedJob): Promise<void> => {
+  const appliedList = await getFromLocalStorage(STORAGE_KEY_APPLIED_LIST)
   if (appliedList) {
-    appliedList.push(applied)
-    await saveToSyncStorage(STORAGE_KEY, appliedList)
+    appliedList.push(job)
+    await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, appliedList)
   } else {
-    await saveToSyncStorage(STORAGE_KEY, [applied])
+    await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, [job])
   }
 }
 
 export const saveAppliedList = async (appliedList: appliedJob[]): Promise<void> => {
-  await saveToSyncStorage(STORAGE_KEY, appliedList)
+  await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, appliedList)
+}
+
+export const getAppliedList = async (): Promise<appliedJob[]> => {
+  const appliedList = await getFromLocalStorage(STORAGE_KEY_APPLIED_LIST)
+  return appliedList
 }
 
 export const getFromSyncStorage = (key: string): Promise<any> => {
@@ -34,6 +38,31 @@ export const saveToSyncStorage = (key: string, value: any): Promise<void> => {
     try {
       chrome.storage.sync.set({ [key]: value }, () => {
         return resolve()
+      })
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
+export const saveToLocalStorage = (key: string, value: any): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    try {
+      chrome.storage.local.set({ [key]: value }, () => {
+        return resolve()
+      })
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
+export const getFromLocalStorage = (key: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    try {
+      chrome.storage.local.get([key], (result) => {
+        if (!result[key]) return resolve(null)
+        return resolve(result[key])
       })
     } catch (e) {
       reject(e)
