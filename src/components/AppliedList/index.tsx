@@ -16,6 +16,10 @@ const formattedDateTime = (datetime: string) => {
     return moment(datetime).format('YYYY-MM-DD')
   }
 
+  if (datetime.length > 10) {
+    return moment(datetime).format('YYYY-MM-DD')
+  }
+
   return ''
 }
 
