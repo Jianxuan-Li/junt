@@ -1,16 +1,6 @@
 import { appliedJob } from '@/types/appliedJob'
 import { STORAGE_KEY_APPLIED_LIST } from '@/constants/storage'
 
-export const saveApplied = async (job: appliedJob): Promise<void> => {
-  const appliedList = await getFromLocalStorage(STORAGE_KEY_APPLIED_LIST)
-  if (appliedList) {
-    appliedList.push(job)
-    await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, appliedList)
-  } else {
-    await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, [job])
-  }
-}
-
 export const saveAppliedList = async (appliedList: appliedJob[]): Promise<void> => {
   await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, appliedList)
 }

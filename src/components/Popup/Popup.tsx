@@ -11,7 +11,7 @@ import CreateIcon from '@mui/icons-material/Create'
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
 import InfoIcon from '@mui/icons-material/Info'
 import CachedIcon from '@mui/icons-material/Cached'
-import { syncAppliedList } from '@/libs/sync'
+import { fetchAppliedList } from '@/libs/sync'
 import { SheetInfoContext } from '@/context/SheetInfoContext'
 
 type Props = {
@@ -26,7 +26,7 @@ export default function Popup({ onAppliedListLoaded }: Props) {
 
   const handleSync = async () => {
     setLoading(true)
-    const appList = await syncAppliedList()
+    const appList = await fetchAppliedList(true)
     setDefaultAppliedList(appList)
     setLoading(false)
     if (onAppliedListLoaded) {
