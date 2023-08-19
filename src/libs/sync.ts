@@ -11,7 +11,7 @@ import {
   SYNC_STORAGE_KEY_SHEET_ID,
 } from '@/constants/storage'
 
-export const fromSheetToLocal = async (sheetData: any) => {
+export const normalize = async (sheetData: any) => {
   const appliedList = sheetData.map((row: any[], index: number) => {
     return {
       id: index,
@@ -21,7 +21,6 @@ export const fromSheetToLocal = async (sheetData: any) => {
       url: row[3],
     }
   })
-  await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, appliedList)
   return appliedList
 }
 
@@ -44,9 +43,11 @@ export const fetchAppliedList = async (force: boolean = false, sheetId: string =
   let transedList: appliedJob[] = []
   if (force || (await shouldSync())) {
     const appliedList = await getSheetData(sheetId, DEFUALT_RANGE)
+    transedList = await normalize(appliedList)
+
     // save last sync datetime
     await saveToLocalStorage(STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME, moment().format())
-    transedList = await fromSheetToLocal(appliedList)
+    await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, transedList)
   } else {
     transedList = await getFromLocalStorage(STORAGE_KEY_APPLIED_LIST)
   }
