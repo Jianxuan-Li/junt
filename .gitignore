@@ -1,5 +1,6 @@
 .DS_Store
 extension_base/manifest.json
+dist.zip
 
 # Logs
 logs
