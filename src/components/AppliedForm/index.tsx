@@ -41,8 +41,17 @@ export default function AppliedForm({}: Props) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0]
 
-      // if tab url not match to linkedin, send nothing to background
-      if (!tab.url?.includes('linkedin.com/jobs/search/')) {
+      // supported urls:
+      const supportedUrls = ['linkedin.com/jobs/search/', 'linkedin.com/jobs/collections/']
+
+      let isSupported = false
+      supportedUrls.forEach((url) => {
+        if (tab.url?.includes(url)) {
+          isSupported = true
+        }
+      })
+
+      if (!isSupported) {
         return
       }
 
