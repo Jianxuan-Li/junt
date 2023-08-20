@@ -1,5 +1,3 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -10,6 +8,7 @@ const stylesHandler = MiniCssExtractPlugin.loader
 const config = {
   entry: {
     popup: './src/popup.tsx',
+    inject: './src/inject.ts',
     // fullpage: "./src/fullpage.ts"
   },
   output: {
@@ -41,9 +40,7 @@ const config = {
         { from: 'extension_base/manifest.json', to: '' },
       ],
     }),
-
     new MiniCssExtractPlugin(),
-
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
   ],
@@ -59,14 +56,27 @@ const config = {
         use: [stylesHandler, 'css-loader', 'postcss-loader'],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        test: /\.(png|jpg|jpeg|gif)$/i,
         use: [
           {
             loader: 'file-loader',
+            options: {
+              name: 'images/[hash].[ext]',
+            },
           },
         ],
       },
-
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/[hash].[ext]',
+            },
+          },
+        ],
+      },
       // Add your rules for custom modules here
       // Learn more about loaders from https://webpack.js.org/loaders/
     ],
