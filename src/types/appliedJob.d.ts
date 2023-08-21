@@ -5,3 +5,13 @@ export type appliedJob = {
   datetime: string
   url?: string
 }
+
+export type AppliedList = appliedJob[]
+
+export type AppliedMapValue = {
+  datetime: string
+  title: string
+  id: number
+}
+
+export type AppliedMap = Map<string, AppliedMapValue>

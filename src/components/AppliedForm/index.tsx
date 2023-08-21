@@ -85,7 +85,7 @@ export default function AppliedForm({}: Props) {
           target: { tabId: tab.id },
           func: getCompanyNameAndPosition,
         })
-        .then(() => console.log('Injected a function!'))
+        .then(() => {})
     })
   }, [])
 

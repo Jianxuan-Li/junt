@@ -22,6 +22,9 @@ const config = {
     devMiddleware: {
       writeToDisk: true,
     },
+    client: {
+      reconnect: false,
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
