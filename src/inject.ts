@@ -73,7 +73,6 @@ const performInjection = (appliedMap: AppliedMap) => {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'urlUpdated') {
       const newUrl = window.location.href.split('?')[0]
-      console.log(currentUrl, newUrl)
 
       if (newUrl === currentUrl) {
         return
