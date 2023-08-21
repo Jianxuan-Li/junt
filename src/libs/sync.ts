@@ -27,7 +27,7 @@ export const normalize = async (sheetData: any) => {
 export const shouldSync = async (): Promise<boolean> => {
   const lastSyncDatetime = await getFromLocalStorage(STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME)
   if (!lastSyncDatetime) return true
-  const lastSync = moment(lastSyncDatetime)
+  const lastSync = moment(Date.parse(lastSyncDatetime))
   const now = moment()
   const diff = now.diff(lastSync, 'minutes')
   return diff > 5
@@ -60,7 +60,7 @@ export const appendAppliedJob = async (job: appliedJob): Promise<appliedJob[]> =
   const sheetId = await getFromSyncStorage(SYNC_STORAGE_KEY_SHEET_ID)
   if (!sheetId) return
 
-  const dt = moment(job.datetime).format('YYYY-MM-DD HH:mm:ss')
+  const dt = moment(Date.parse(job.datetime)).format('YYYY-MM-DD HH:mm:ss')
   const values = [[dt, job.company, job.title, job.url]]
 
   await appendSheetData(sheetId, DEFUALT_RANGE, values)

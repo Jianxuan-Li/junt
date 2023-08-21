@@ -13,11 +13,11 @@ type Props = {
 
 const formattedDateTime = (datetime: string) => {
   if (datetime.length === 10 || datetime.length === 16 || datetime.length === 19) {
-    return moment(datetime).format('YYYY-MM-DD')
+    return moment(Date.parse(datetime)).format('YYYY-MM-DD')
   }
 
   if (datetime.length > 10) {
-    return moment(datetime).format('YYYY-MM-DD')
+    return moment(Date.parse(datetime)).format('YYYY-MM-DD')
   }
 
   return ''

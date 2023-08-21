@@ -8,37 +8,46 @@ import { listToMap } from '@/libs/appliedJobsUtil'
 
 // using factory to create a new instance of a injection class
 let injector: null | InjectionFactory = null
+let injected: boolean = false
 
-const performInjection = (appliedMap: AppliedMap) => {
+// save current url, remove query string
+let currentUrl: string = window.location.href.split('?')[0]
+
+const getInjector = (): null | InjectionFactory => {
   // get domain name from url of current tab
   // the domain name must assigned in manifest.json, see gen-manifest.mjs
+
   const url = window.location.href
   const domain = url.split('/')[2]
+  let selectedInjector: null | InjectionFactory = null
+  switch (domain) {
+    case 'www.linkedin.com':
+    case 'linkedin.com':
+      selectedInjector = new LinkedinInjector()
+      break
+    default:
+      break
+  }
 
+  return selectedInjector
+}
+
+const performInjection = (appliedMap: AppliedMap) => {
   // destroy the old injector
   if (injector) {
     injector.destroy()
     injector = null
   }
 
-  switch (domain) {
-    case 'www.linkedin.com':
-    case 'linkedin.com':
-      injector = new LinkedinInjector()
-      break
-    default:
-      break
-  }
+  injector = getInjector()
 
+  // if no injector found, exit
   if (!injector) {
     return
   }
 
-  // inject to the target page
-  injector.inject(url, appliedMap)
-
   // listen to disconnect message to destroy the injector
-  //   user may disconnect from settings page in popup
+  //   user may disconnect from settings page in popup, see src/components/Settings
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'disconnectedGoogleSheet') {
       injector?.destroy()
@@ -47,7 +56,7 @@ const performInjection = (appliedMap: AppliedMap) => {
   })
 
   // listen to update appliedMap message to update appliedMap
-  //   user may add new applied job in popup
+  //   user may add new applied job in popup, see src/components/AppliedForm
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'updateAppliedMap') {
       getFromLocalStorage(STORAGE_KEY_APPLIED_LIST).then((appliedList) => {
@@ -55,6 +64,35 @@ const performInjection = (appliedMap: AppliedMap) => {
           injector?.setAppliedMap(listToMap(appliedList))
         }
       })
+    }
+  })
+
+  // inject to the target page
+  injected = injector.inject(window.location.href, appliedMap)
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === 'urlUpdated') {
+      const newUrl = window.location.href.split('?')[0]
+      console.log(currentUrl, newUrl)
+
+      if (newUrl === currentUrl) {
+        return
+      }
+
+      currentUrl = newUrl
+
+      // destroy the old injector if user not in the target page or user change the target page
+      if (injector) {
+        injector.destroy()
+        injector = null
+      }
+
+      injector = getInjector()
+      if (injector) {
+        injected = injector.inject(window.location.href, appliedMap)
+      } else {
+        injected = false
+      }
     }
   })
 }

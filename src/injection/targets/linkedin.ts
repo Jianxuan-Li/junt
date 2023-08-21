@@ -5,7 +5,7 @@ import moment from 'moment'
 
 export default class LinkedinTarget implements InjectionTarget {
   url: string
-  allowedUrls: string[] = [urls.LINKEDIN_JOBS_SEARCH, urls.LINKEDIN_JOBS_COLLECTIONS, urls.LINKEDIN_JOBS_VIEW]
+  allowedUrls: string[] = [urls.LINKEDIN_JOBS_SEARCH, urls.LINKEDIN_JOBS_COLLECTIONS]
   appliedMap: AppliedMap = new Map()
   targetClass = 'jobs-unified-top-card__primary-description'
   listElement = 'ul.scaffold-layout__list-container'
@@ -60,7 +60,7 @@ export default class LinkedinTarget implements InjectionTarget {
           const badge = document.createElement('div')
           badge.classList.add('juntInjectedAppliedBadge')
           badge.innerHTML = `Junt: You applied ${applied.title}`
-          badge.innerHTML += `<br />on ${moment(applied.datetime).format('YYYY-MM-DD HH:mm:ss')}`
+          badge.innerHTML += `<br />on ${moment(Date.parse(applied.datetime)).format('dddd, MM Do YYYY, h:mm')}`
           const targetDom = item.querySelector('div.artdeco-entity-lockup__content')
           targetDom.insertBefore(badge, targetDom.lastChild)
         }

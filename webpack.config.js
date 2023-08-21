@@ -9,6 +9,7 @@ const config = {
   entry: {
     popup: './src/popup.tsx',
     inject: './src/inject.ts',
+    'service-worker': './src/service-worker.ts',
     // fullpage: "./src/fullpage.ts"
   },
   output: {
