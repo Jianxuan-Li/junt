@@ -9,6 +9,8 @@ export default class LinkedinTarget implements InjectionTarget {
   appliedMap: AppliedMap = new Map()
   targetClass = 'jobs-unified-top-card__primary-description'
   listElement = 'ul.scaffold-layout__list-container'
+  observer: MutationObserver | null = null
+  waitForElementInterval: number | null = null
 
   constructor(url: string) {
     this.url = url
@@ -30,15 +32,15 @@ export default class LinkedinTarget implements InjectionTarget {
 
   private waitForElement(selector: string, maxRetry: number = 10): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      const interval = setInterval(() => {
+      this.waitForElementInterval = setInterval(() => {
         const element = document.querySelector(selector)
         maxRetry--
         if (element) {
-          clearInterval(interval)
+          clearInterval(this.waitForElementInterval)
           resolve(true)
         }
         if (maxRetry <= 0) {
-          clearInterval(interval)
+          clearInterval(this.waitForElementInterval)
           resolve(false)
         }
       }, 1000)
@@ -72,25 +74,46 @@ export default class LinkedinTarget implements InjectionTarget {
         if (!(await this.waitForElement(this.listElement))) {
           return
         }
-        setTimeout(async () => {
-          this.injectToSearchList()
 
-          // use MutationObserver to detect changes in the DOM
-          // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
-          const targetNode = document.querySelector(this.listElement)
-          const config = { childList: true }
-          const callback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
-            for (const mutation of mutationsList) {
-              if (mutation.type === 'childList') {
-                this.injectToSearchList()
-              }
+        this.injectToSearchList()
+
+        // use MutationObserver to detect changes in the DOM
+        // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+        const targetNode = document.querySelector(this.listElement)
+        const config = { childList: true }
+        const callback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
+          for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+              this.injectToSearchList()
             }
           }
-          const observer = new MutationObserver(callback)
-          observer.observe(targetNode, config)
-        }, 5000)
+        }
+        const observer = new MutationObserver(callback)
+        observer.observe(targetNode, config)
+        this.observer = observer
       } catch (error) {}
       resolve()
     })
+  }
+
+  public disinjected(): void {
+    const badge = document.querySelectorAll('div.juntInjectedAppliedBadge')
+    for (const b of badge) {
+      b.remove()
+    }
+  }
+
+  public updateInjection(): void {
+    this.injectToSearchList()
+  }
+
+  public destory(): void {
+    if (this.observer) {
+      this.observer.disconnect()
+    }
+    if (this.waitForElementInterval) {
+      clearInterval(this.waitForElementInterval)
+    }
+    this.disinjected()
   }
 }

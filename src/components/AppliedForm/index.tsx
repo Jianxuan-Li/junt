@@ -12,6 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
 import { appendAppliedJob } from '@/libs/sync'
 import { SheetInfoContext } from '@/context/SheetInfoContext'
+import { listToMap } from '@/libs/appliedJobsUtil'
 
 import './index.css'
 
@@ -116,6 +117,11 @@ export default function AppliedForm({}: Props) {
     setAlertType('success')
     setOpen(true)
     setLoading(false)
+
+    // send message to content script to update applied list
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id!, { message: 'updateAppliedMap' })
+    })
   }
 
   const [open, setOpen] = React.useState(false)

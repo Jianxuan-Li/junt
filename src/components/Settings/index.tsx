@@ -6,6 +6,7 @@ import './index.css'
 import ConnectButton from './ConnectButton'
 import DisconnectButton from './DisconnectButton'
 import FindSheetsId from './FindSheetsId'
+import { fetchAppliedList } from '@/libs/sync'
 
 type Props = {}
 
@@ -23,6 +24,25 @@ export default function index({}: Props) {
     chrome.storage.sync.set({ sheetId })
     chrome.storage.sync.set({ sheet: res })
     setSheetInfo(res)
+
+    // force sync the applied list to local
+    const appliedList = await fetchAppliedList()
+
+    // send message to content script to update applied list
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id!, { message: 'sheetIdUpdated', appliedList })
+    })
+  }
+
+  const handleDisconnect = () => {
+    chrome.storage.local.clear()
+    chrome.storage.sync.clear()
+    setSheetId('')
+    setSheet(null)
+    setSheetInfo(null)
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id!, { message: 'disconnectedGoogleSheet' })
+    })
   }
 
   const handleSheetIdChange = (e: any) => {
@@ -72,17 +92,7 @@ export default function index({}: Props) {
         <div className="connectedInfo">Connected to your google sheets: {sheet.properties.title}</div>
       )}
 
-      {!loading && sheet !== null && (
-        <DisconnectButton
-          onClick={() => {
-            chrome.storage.local.clear()
-            chrome.storage.sync.clear()
-            setSheetId('')
-            setSheet(null)
-            setSheetInfo(null)
-          }}
-        />
-      )}
+      {!loading && sheet !== null && <DisconnectButton onClick={handleDisconnect} />}
     </div>
   )
 }

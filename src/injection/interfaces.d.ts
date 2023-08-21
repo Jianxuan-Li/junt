@@ -7,4 +7,6 @@ export interface InjectionTarget {
   setAppliedMap(appliedMap: AppliedMap): void
   isInjectable(): boolean
   inject(): Promise<void>
+  destory(): void
+  updateInjection(): void
 }

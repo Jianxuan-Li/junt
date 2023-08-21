@@ -56,7 +56,7 @@ export const fetchAppliedList = async (force: boolean = false, sheetId: string =
   return transedList
 }
 
-export const appendAppliedJob = async (job: appliedJob) => {
+export const appendAppliedJob = async (job: appliedJob): Promise<appliedJob[]> => {
   const sheetId = await getFromSyncStorage(SYNC_STORAGE_KEY_SHEET_ID)
   if (!sheetId) return
 
@@ -65,5 +65,5 @@ export const appendAppliedJob = async (job: appliedJob) => {
 
   await appendSheetData(sheetId, DEFUALT_RANGE, values)
   await sortSheetRows(sheetId)
-  await fetchAppliedList(true, sheetId)
+  return await fetchAppliedList(true, sheetId)
 }
