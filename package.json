@@ -36,7 +36,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^14.0.0",
     "mini-css-extract-plugin": "^2.7.6",
-    "postcss": "^8.4.27",
+    "postcss": "^8.4.28",
     "postcss-loader": "^7.3.3",
     "prettier": "^3.0.1",
     "react-dom": "^18.2.0",
