@@ -40,3 +40,6 @@ jobs:
         with:
           artifacts: junt-${{ github.ref_name }}.zip
           token: ${{ secrets.GH_TOKEN }}
+          allowUpdates: true
+          makeLatest: true
+          replacesArtifacts: true
