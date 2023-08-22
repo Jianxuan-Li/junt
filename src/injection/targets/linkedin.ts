@@ -108,12 +108,8 @@ export default class LinkedinTarget implements InjectionTarget {
   }
 
   public destory(): void {
-    if (this.observer) {
-      this.observer.disconnect()
-    }
-    if (this.waitForElementInterval) {
-      clearInterval(this.waitForElementInterval)
-    }
+    if (this.observer) this.observer.disconnect()
+    if (this.waitForElementInterval) clearInterval(this.waitForElementInterval)
     this.disinjected()
   }
 }
