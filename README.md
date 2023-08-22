@@ -8,6 +8,27 @@ Junt (Javascript-job-hUNTer) is a Chrome extension that helps you to track your 
 
 [![Watch the video](https://img.youtube.com/vi/-JZuQN0Yymg/hqdefault.jpg)](https://youtu.be/-JZuQN0Yymg)
 
+## Installtion
+
+### Install from Chrome Web Store (Recommended)
+
+[go to Chrome Store](https://chrome.google.com/webstore/detail/junt/ofgimnfoihdgacaommcakoeldinmjdma) (Maybe not the latest version)
+
+- Click `Add to Chrome`
+- Pin `Junt`
+
+### Download from Github
+
+[Download latest release](https://github.com/Jianxuan-Li/junt/releases)
+
+Then load the extension in Chrome:
+
+- Open `chrome://extensions/`
+- Turn `Developer mode` on
+- `Load unpacked`
+- Select `dist` dir
+- Pin `Junt`
+
 ## Development
 
 Step 1: create a new `.env` file
