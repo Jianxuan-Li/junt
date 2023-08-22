@@ -91,6 +91,9 @@ const config = {
       '@': path.resolve('src'),
     },
   },
+  performance: {
+    hints: false,
+  },
 }
 
 module.exports = () => {

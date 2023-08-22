@@ -1,0 +1,37 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: make build
+
+      - name: Archive release
+        uses: thedoctor0/zip-release@0.7.1
+        with:
+          type: zip
+          filename: junt-${{ github.ref_name }}.zip
+          path: dist
+
+      - name: Upload release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          artifacts: junt-${{ github.ref_name }}.zip
+          token: ${{ secrets.GH_TOKEN }}
