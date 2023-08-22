@@ -139,7 +139,7 @@ export default function AppliedForm({}: Props) {
 
   return (
     <div className="manuallyForm">
-      <h1>Manually save to applied</h1>
+      <h1>Save to applied</h1>
       <Box autoComplete="off" component="form" sx={{ width: '100%' }} onSubmit={handleSubmit}>
         <FormControl fullWidth={true}>
           <Stack spacing={2}>

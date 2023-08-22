@@ -1,10 +1,12 @@
 # 🚀 Junt
 
-## Description
+![release](https://github.com/jianxuan-li/junt/actions/workflows/release.yml/badge.svg)
 
 Junt (Javascript-job-hUNTer) is a Chrome extension that helps you to track your job applications. It's totally free and open source.
 
-## Demo
+[Features](docs/features.md) | [Privacy](docs/privacy.md) | [Terms of Use](docs/terms.md)
+
+## Demo video
 
 [![Watch the video](https://img.youtube.com/vi/-JZuQN0Yymg/hqdefault.jpg)](https://youtu.be/-JZuQN0Yymg)
 
