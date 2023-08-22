@@ -7,11 +7,14 @@ export default class LinkedinTarget implements InjectionTarget {
   url: string
   allowedUrls: string[] = [urls.LINKEDIN_JOBS_SEARCH, urls.LINKEDIN_JOBS_COLLECTIONS]
   appliedMap: AppliedMap = new Map()
-  listElement = 'ul.scaffold-layout__list-container'
-  appliedBadgeElement = 'div.juntInjectedAppliedBadge'
-  appliedBadgeParentElement = 'div.artdeco-entity-lockup__content'
-  companyNameElement = 'span.job-card-container__primary-description'
-  observer: MutationObserver | null = null
+
+  listElement: string = 'ul.scaffold-layout__list-container'
+  appliedBadgeElement: string = 'div.juntInjectedAppliedBadge'
+  appliedBadgeParentElement: string = 'div.artdeco-entity-lockup__content'
+  companyNameElement: string = 'span.job-card-container__primary-description'
+
+  listObserver: MutationObserver | null = null
+  detailObserver: MutationObserver | null = null
   waitForElementInterval: number | null = null
 
   constructor(url: string) {
@@ -61,8 +64,14 @@ export default class LinkedinTarget implements InjectionTarget {
         if (applied && !badge) {
           const badge = document.createElement('div')
           badge.classList.add(this.appliedBadgeElement.split('.')[1])
-          badge.innerHTML = `Junt: You applied ${applied.title}`
-          badge.innerHTML += `<br />on ${moment(Date.parse(applied.datetime)).format('dddd, MM Do YYYY, h:mm')}`
+          if (applied.title) {
+            badge.innerHTML = `Junt: You applied ${applied.title}`
+            badge.innerHTML += `<br />on ${moment(Date.parse(applied.datetime)).format('dddd, MM Do YYYY, h:mm')}`
+          } else {
+            badge.innerHTML = `Junt: You applied on ${moment(Date.parse(applied.datetime)).format(
+              'dddd, MM Do YYYY, h:mm',
+            )}`
+          }
           const targetDom = item.querySelector(this.appliedBadgeParentElement)
           targetDom.insertBefore(badge, targetDom.lastChild)
         }
@@ -90,9 +99,8 @@ export default class LinkedinTarget implements InjectionTarget {
             }
           }
         }
-        const observer = new MutationObserver(callback)
-        observer.observe(targetNode, config)
-        this.observer = observer
+        this.listObserver = new MutationObserver(callback)
+        this.listObserver.observe(targetNode, config)
       } catch (error) {}
       resolve()
     })
@@ -110,7 +118,8 @@ export default class LinkedinTarget implements InjectionTarget {
   }
 
   public destory(): void {
-    if (this.observer) this.observer.disconnect()
+    if (this.listObserver) this.listObserver.disconnect()
+    if (this.detailObserver) this.detailObserver.disconnect()
     if (this.waitForElementInterval) clearInterval(this.waitForElementInterval)
     this.disinjected()
   }
