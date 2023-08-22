@@ -7,8 +7,10 @@ export default class LinkedinTarget implements InjectionTarget {
   url: string
   allowedUrls: string[] = [urls.LINKEDIN_JOBS_SEARCH, urls.LINKEDIN_JOBS_COLLECTIONS]
   appliedMap: AppliedMap = new Map()
-  targetClass = 'jobs-unified-top-card__primary-description'
   listElement = 'ul.scaffold-layout__list-container'
+  appliedBadgeElement = 'div.juntInjectedAppliedBadge'
+  appliedBadgeParentElement = 'div.artdeco-entity-lockup__content'
+  companyNameElement = 'span.job-card-container__primary-description'
   observer: MutationObserver | null = null
   waitForElementInterval: number | null = null
 
@@ -51,17 +53,17 @@ export default class LinkedinTarget implements InjectionTarget {
     const baseElement = document.querySelector(this.listElement)
     const listItems = baseElement.querySelectorAll('li')
     for (const item of listItems) {
-      const companyElement = item.querySelector('span.job-card-container__primary-description')
+      const companyElement = item.querySelector(this.companyNameElement)
       if (companyElement) {
         const companyName = (companyElement as HTMLElement).innerText
         const applied = this.appliedMap.get(companyName)
-        const badge = item.querySelector('div.juntInjectedAppliedBadge')
+        const badge = item.querySelector(this.appliedBadgeElement)
         if (applied && !badge) {
           const badge = document.createElement('div')
-          badge.classList.add('juntInjectedAppliedBadge')
+          badge.classList.add(this.appliedBadgeElement.split('.')[1])
           badge.innerHTML = `Junt: You applied ${applied.title}`
           badge.innerHTML += `<br />on ${moment(Date.parse(applied.datetime)).format('dddd, MM Do YYYY, h:mm')}`
-          const targetDom = item.querySelector('div.artdeco-entity-lockup__content')
+          const targetDom = item.querySelector(this.appliedBadgeParentElement)
           targetDom.insertBefore(badge, targetDom.lastChild)
         }
       }
@@ -97,7 +99,7 @@ export default class LinkedinTarget implements InjectionTarget {
   }
 
   public disinjected(): void {
-    const badge = document.querySelectorAll('div.juntInjectedAppliedBadge')
+    const badge = document.querySelectorAll(this.appliedBadgeElement)
     for (const b of badge) {
       b.remove()
     }
