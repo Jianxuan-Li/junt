@@ -7,14 +7,16 @@ export const test = base.extend<{
 }>({
   context: async ({}, use) => {
     const pathToExtension = path.join(__dirname, '../dist')
+
+    // https://playwright.dev/docs/chrome-extensions#headless-mode
+    let args = [`--disable-extensions-except=${pathToExtension}`, `--load-extension=${pathToExtension}`]
+    if (process.env.CI) {
+      args = [`--headless=new`, ...args]
+    }
+
     const context = await chromium.launchPersistentContext('', {
       headless: false,
-      args: [
-        // new for chrome v109+, https://playwright.dev/docs/chrome-extensions#headless-mode
-        // `--headless=chrome`,
-        `--disable-extensions-except=${pathToExtension}`,
-        `--load-extension=${pathToExtension}`,
-      ],
+      args,
     })
     await use(context)
     await context.close()
