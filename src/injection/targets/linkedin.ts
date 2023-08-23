@@ -15,7 +15,7 @@ export default class LinkedinTarget implements InjectionTarget {
 
   listObserver: MutationObserver | null = null
   detailObserver: MutationObserver | null = null
-  waitForElementInterval: number | null = null
+  waitForElementInterval: number | ReturnType<typeof setInterval> | null = null
 
   constructor(url: string) {
     this.url = url
