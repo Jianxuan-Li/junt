@@ -21,7 +21,7 @@ export default function About({}: Props) {
       <p>
         If you find any bugs, please report it to Github issues:{' '}
         <a href="https://github.com/Jianxuan-Li/junt/issues" title="github" target="_blank">
-        https://github.com/Jianxuan-Li/junt/issues
+          https://github.com/Jianxuan-Li/junt/issues
         </a>
       </p>
       <h1>How to organize data in your google sheets</h1>
@@ -34,6 +34,13 @@ export default function About({}: Props) {
       <p>Example:</p>
       <p>
         <img src={a1} alt="a1" />
+      </p>
+      <h1>How to delete a record</h1>
+      <p>Remove that record from your google sheet.</p>
+      <h1>Synchronize data</h1>
+      <p>
+        Junt automatically cache data from your Google sheet, usually you don't need to click the `Synchronize` button.
+        Still, have control: hit 'Synchronize' anytime.
       </p>
     </div>
   )

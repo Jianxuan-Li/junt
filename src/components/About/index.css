@@ -1,8 +1,11 @@
 .aboutPage {
   width: 100%;
   padding: 5px;
+  height: 550px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
-.aboutPage img{
+.aboutPage img {
   max-width: 100%;
 }
