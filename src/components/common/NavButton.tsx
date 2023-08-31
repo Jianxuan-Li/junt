@@ -14,10 +14,11 @@ const Button = styled.button`
   cursor: pointer;
   line-height: 1;
   margin: 0;
-  min-width: 46px;
+  width: 22px;
+  height: 32px;
   outline: none;
   overflow: hidden;
-  padding: 3px;
+  padding: 5px;
   position: relative;
   text-align: center;
   text-decoration: none;

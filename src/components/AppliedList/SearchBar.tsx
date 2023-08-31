@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchIcon from '@mui/icons-material/Search'
+import { SearchIcon } from '@/components/common/Icons'
 import './index.css'
 type Props = {
   onSearchResult: (ids: number[], keyword: string) => void

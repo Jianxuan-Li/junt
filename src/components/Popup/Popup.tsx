@@ -6,11 +6,7 @@ import AppliedListTab from '@/components/AppliedList'
 import AboutTab from '@/components/About'
 
 import NavButton from '@/components/common/NavButton'
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
-import CreateIcon from '@mui/icons-material/Create'
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
-import InfoIcon from '@mui/icons-material/Info'
-import CachedIcon from '@mui/icons-material/Cached'
+import { ListIcon, RefreshIcon, CreateIcon, SettingsIcon, InfoIcon } from '@/components/common/Icons'
 import { fetchAppliedList } from '@/libs/sync'
 import { SheetInfoContext } from '@/context/SheetInfoContext'
 
@@ -55,13 +51,13 @@ export default function Popup({ onAppliedListLoaded }: Props) {
           {tab === 0 && sheetInfo && (
             <div className="navItem">
               <NavButton onClick={() => handleSync()}>
-                <CachedIcon />
+                <RefreshIcon />
               </NavButton>
             </div>
           )}
           <div className="navItem">
             <NavButton onClick={() => setTab(0)}>
-              <FormatListNumberedIcon />
+              <ListIcon />
             </NavButton>
           </div>
           <div className="navItem">
@@ -71,7 +67,7 @@ export default function Popup({ onAppliedListLoaded }: Props) {
           </div>
           <div className="navItem">
             <NavButton onClick={() => setTab(2)}>
-              <SettingsSuggestIcon />
+              <SettingsIcon />
             </NavButton>
           </div>
           <div className="navItem">
