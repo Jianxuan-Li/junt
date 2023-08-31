@@ -1,6 +1,6 @@
 {
   "name": "junt",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "description": "Junt",
   "main": "index.js",
   "scripts": {
