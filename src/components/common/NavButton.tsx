@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 
 type Props = {
   children?: React.ReactNode
+  title: string
   onClick?: () => any
 }
 
@@ -44,6 +45,10 @@ const Button = styled.button`
   }
 `
 
-export default function NavButton({ children, onClick }: Props) {
-  return <Button onClick={onClick}>{children}</Button>
+export default function NavButton({ children, onClick, title }: Props) {
+  return (
+    <Button onClick={onClick} title={title}>
+      {children}
+    </Button>
+  )
 }

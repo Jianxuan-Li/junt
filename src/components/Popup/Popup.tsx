@@ -50,28 +50,28 @@ export default function Popup({ onAppliedListLoaded }: Props) {
         <div className="rightNav">
           {tab === 0 && sheetInfo && (
             <div className="navItem">
-              <NavButton onClick={() => handleSync()}>
+              <NavButton onClick={() => handleSync()} title="Synchronize">
                 <RefreshIcon />
               </NavButton>
             </div>
           )}
           <div className="navItem">
-            <NavButton onClick={() => setTab(0)}>
+            <NavButton onClick={() => setTab(0)} title="Applied jobs">
               <ListIcon />
             </NavButton>
           </div>
           <div className="navItem">
-            <NavButton onClick={() => setTab(1)}>
+            <NavButton onClick={() => setTab(1)} title="New applied">
               <CreateIcon />
             </NavButton>
           </div>
           <div className="navItem">
-            <NavButton onClick={() => setTab(2)}>
+            <NavButton onClick={() => setTab(2)} title="Settings">
               <SettingsIcon />
             </NavButton>
           </div>
           <div className="navItem">
-            <NavButton onClick={() => setTab(3)}>
+            <NavButton onClick={() => setTab(3)} title="About">
               <InfoIcon />
             </NavButton>
           </div>
