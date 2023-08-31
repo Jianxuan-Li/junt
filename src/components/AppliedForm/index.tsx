@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { appendAppliedJob } from '@/libs/sync'
 import { SheetInfoContext } from '@/context/SheetInfoContext'
 import './index.css'
@@ -16,13 +16,17 @@ type JobPostingMessage = {
 const formDateTimeFormat = 'YYYY-MM-DDThh:mm'
 const savedDateTimeFormat = 'YYYY-MM-DD hh:mm'
 
+const now = () => {
+  return dayjs().format(formDateTimeFormat)
+}
+
 export default function AppliedForm({}: Props) {
   const [loading, setLoading] = React.useState(false)
   const [form, setForm] = React.useState({
     company: '',
     title: '',
     url: '',
-    datetime: moment().format(formDateTimeFormat),
+    datetime: now(),
   })
   const { sheetInfo } = useContext(SheetInfoContext)
 
@@ -34,7 +38,7 @@ export default function AppliedForm({}: Props) {
         company: request.company || '',
         title: request.title || '',
         url: request.url || '',
-        datetime: moment().format(formDateTimeFormat),
+        datetime: now(),
       })
     }
 
@@ -123,7 +127,7 @@ export default function AppliedForm({}: Props) {
 
     await appendAppliedJob({
       ...form,
-      datetime: moment(form.datetime).format(savedDateTimeFormat),
+      datetime: dayjs(form.datetime).format(savedDateTimeFormat),
     })
 
     // reset form
@@ -131,7 +135,7 @@ export default function AppliedForm({}: Props) {
       company: '',
       title: '',
       url: '',
-      datetime: moment().format(formDateTimeFormat),
+      datetime: now(),
     })
 
     setMessage('Application saved!')

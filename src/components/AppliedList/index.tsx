@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { fetchAppliedList } from '@/libs/sync'
 import { appliedJob } from '@/types/appliedJob'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import './index.css'
 import SearchBar from './SearchBar'
 
@@ -13,11 +13,11 @@ type Props = {
 
 const formattedDateTime = (datetime: string) => {
   if (datetime.length === 10 || datetime.length === 16 || datetime.length === 19) {
-    return moment(Date.parse(datetime)).format('YYYY-MM-DD')
+    return dayjs(datetime).format('YYYY-MM-DD')
   }
 
   if (datetime.length > 10) {
-    return moment(Date.parse(datetime)).format('YYYY-MM-DD')
+    return dayjs(datetime).format('YYYY-MM-DD')
   }
 
   return ''

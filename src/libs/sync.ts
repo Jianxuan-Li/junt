@@ -1,6 +1,6 @@
 // Sync data from google sheet to local
 import { appliedJob } from '@/types/appliedJob'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { getSheetData, DEFUALT_RANGE, appendSheetData, sortSheetRows } from '@/libs/sheetsUtil'
 import { getFromSyncStorage, getFromLocalStorage, saveToLocalStorage } from './storage'
 import { initTrie } from './searchUtil'
@@ -27,8 +27,8 @@ export const normalize = async (sheetData: any) => {
 export const shouldSync = async (): Promise<boolean> => {
   const lastSyncDatetime = await getFromLocalStorage(STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME)
   if (!lastSyncDatetime) return true
-  const lastSync = moment(Date.parse(lastSyncDatetime))
-  const now = moment()
+  const lastSync = dayjs(lastSyncDatetime)
+  const now = dayjs()
   const diff = now.diff(lastSync, 'minutes')
   return diff > 5
 }
@@ -46,7 +46,7 @@ export const fetchAppliedList = async (force: boolean = false, sheetId: string =
     transedList = await normalize(appliedList)
 
     // save last sync datetime
-    await saveToLocalStorage(STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME, moment().format())
+    await saveToLocalStorage(STORAGE_KEY_APPLIED_LAST_SYNC_DATETIME, dayjs().format())
     await saveToLocalStorage(STORAGE_KEY_APPLIED_LIST, transedList)
   } else {
     transedList = await getFromLocalStorage(STORAGE_KEY_APPLIED_LIST)
@@ -60,7 +60,7 @@ export const appendAppliedJob = async (job: appliedJob): Promise<appliedJob[]> =
   const sheetId = await getFromSyncStorage(SYNC_STORAGE_KEY_SHEET_ID)
   if (!sheetId) return
 
-  const dt = moment(Date.parse(job.datetime)).format('YYYY-MM-DD HH:mm:ss')
+  const dt = dayjs(job.datetime).format('YYYY-MM-DD HH:mm:ss')
   const values = [[dt, job.company, job.title, job.url]]
 
   await appendSheetData(sheetId, DEFUALT_RANGE, values)

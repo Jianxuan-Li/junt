@@ -1,7 +1,7 @@
 import { InjectionTarget } from '../interfaces'
 import * as urls from '@/constants/allowedSites'
 import { AppliedMap } from '@/types/appliedJob'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export default class LinkedinTarget implements InjectionTarget {
   url: string
@@ -66,11 +66,9 @@ export default class LinkedinTarget implements InjectionTarget {
           badge.classList.add(this.appliedBadgeElement.split('.')[1])
           if (applied.title) {
             badge.innerHTML = `Junt: You applied ${applied.title}`
-            badge.innerHTML += `<br />on ${moment(Date.parse(applied.datetime)).format('dddd, MM Do YYYY, h:mm')}`
+            badge.innerHTML += `<br />on ${dayjs(applied.datetime).format('dddd, MM Do YYYY, h:mm')}`
           } else {
-            badge.innerHTML = `Junt: You applied on ${moment(Date.parse(applied.datetime)).format(
-              'dddd, MM Do YYYY, h:mm',
-            )}`
+            badge.innerHTML = `Junt: You applied on ${dayjs(applied.datetime).format('dddd, MM Do YYYY, h:mm')}`
           }
           const targetDom = item.querySelector(this.appliedBadgeParentElement)
           targetDom.insertBefore(badge, targetDom.lastChild)
