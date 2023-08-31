@@ -70,6 +70,8 @@ const performInjection = (appliedMap: AppliedMap) => {
   // inject to the target page
   injected = injector.inject(window.location.href, appliedMap)
 
+  // linkedin uses SPA, so changes in url doesn't trigger page reload,
+  // we need to destroy the old injector and create a new one
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === 'urlUpdated') {
       const newUrl = window.location.href.split('?')[0]
@@ -102,9 +104,7 @@ const inject = async () => {
     getFromLocalStorage(STORAGE_KEY_APPLIED_LIST),
   ])
 
-  // listen to connected to google sheet message to perform injection
-  //   user may connect to google sheet when open a job searching page
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  const sheetIdChangedEvent = (request: any) => {
     if (request.message === 'sheetIdUpdated') {
       sheetId = request.sheetId
       appliedList = request.appliedList
@@ -114,7 +114,13 @@ const inject = async () => {
       // free memory
       appliedList = []
     }
-  })
+  }
+
+  // listen to connected to google sheet message to perform injection
+  // user may connect to google sheet when open a job searching page
+  if (!chrome.runtime.onMessage.hasListener(sheetIdChangedEvent)) {
+    chrome.runtime.onMessage.addListener(sheetIdChangedEvent)
+  }
 
   if (!sheetId || !appliedList) {
     return
