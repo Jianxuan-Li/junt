@@ -3,7 +3,7 @@ import fs from 'fs'
 
 let options = {
   name: 'Junt',
-  description: 'Track your job applications. Free and open source.',
+  description: 'Track your job applications. Free and open source. No ads. Save your data in your Google Sheets.',
   version: '0.2.0',
   manifest_version: 3,
   permissions: ['identity', 'scripting', 'activeTab', 'storage'],
