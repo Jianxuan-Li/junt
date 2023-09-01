@@ -1,0 +1,42 @@
+import snap from './snapfunc'
+const urlMap = new Map<string, string>()
+
+urlMap.set('linkedin.com/jobs/search/', 'linkedinList')
+urlMap.set('linkedin.com/jobs/collections/', 'linkedinList')
+urlMap.set('glassdoor.ca/Job', 'glassdoorList')
+urlMap.set('glassdoor.com/Job', 'glassdoorList')
+
+const supportedSite = (url: string): string | null => {
+  let site = null
+  urlMap.forEach((value, key) => {
+    if (url.includes(key)) {
+      site = value
+      return
+    }
+  })
+  return site
+}
+
+// do query to get company name and position
+// send message to background script
+export const query = () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const tab = tabs[0]
+
+    // // supported urls:
+    let site = supportedSite(tab.url || '')
+    if (site === null) return
+
+    // execute script on tab
+    chrome.scripting
+      .executeScript({
+        target: { tabId: tab.id },
+        func: snap,
+        args: [site],
+      })
+      .then(() => {})
+      .catch(() => {
+        console.log('error')
+      })
+  })
+}

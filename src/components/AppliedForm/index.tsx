@@ -3,14 +3,10 @@ import dayjs from 'dayjs'
 import { appendAppliedJob } from '@/libs/sync'
 import { SheetInfoContext } from '@/context/SheetInfoContext'
 import './index.css'
+import { JobPostingMessage } from './types'
+import { query } from './jobsnap'
 
 type Props = {}
-type JobPostingMessage = {
-  company?: string
-  title?: string
-  url?: string
-  type: 'job-posting-linkedin'
-}
 
 //2018-06-12T19:30
 const formDateTimeFormat = 'YYYY-MM-DDThh:mm'
@@ -32,7 +28,7 @@ export default function AppliedForm({}: Props) {
 
   useEffect(() => {
     const messageHandler = (request: JobPostingMessage) => {
-      if (request.type !== 'job-posting-linkedin') return
+      if (request.message !== 'jobSnap') return
 
       setForm({
         company: request.company || '',
@@ -45,59 +41,8 @@ export default function AppliedForm({}: Props) {
     // add message listener
     chrome.runtime.onMessage.addListener(messageHandler)
 
-    // do query to get company name and position
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const tab = tabs[0]
-
-      // supported urls:
-      const supportedUrls = ['linkedin.com/jobs/search/', 'linkedin.com/jobs/collections/']
-
-      let isSupported = false
-      supportedUrls.forEach((url) => {
-        if (tab.url?.includes(url)) {
-          isSupported = true
-        }
-      })
-
-      if (!isSupported) {
-        return
-      }
-
-      function getCompanyNameAndPosition() {
-        let message: JobPostingMessage = {
-          type: 'job-posting-linkedin',
-        }
-
-        // find company name from linkedin job page
-        const companyDiv = document.querySelectorAll('div.jobs-unified-top-card__primary-description a.app-aware-link')
-        if (companyDiv && companyDiv.length > 0) {
-          message.company = (companyDiv[0] as HTMLElement).innerText
-        }
-
-        const positionDiv = document.querySelectorAll('h2.jobs-unified-top-card__job-title')
-        if (positionDiv && positionDiv.length > 0) {
-          message.title = (positionDiv[0] as HTMLElement).innerText
-        }
-
-        const urlA = document.querySelectorAll('div.jobs-unified-top-card__content--two-pane a.ember-view')
-        if (urlA && urlA.length > 0) {
-          const href = (urlA[0] as HTMLElement).getAttribute('href')
-          // add hostname and remove query string
-          const url = `${window.location.hostname}${href?.split('?')[0]}`
-          message.url = url
-        }
-
-        chrome.runtime.sendMessage(message).catch(() => {})
-      }
-
-      chrome.scripting
-        .executeScript({
-          target: { tabId: tab.id },
-          func: getCompanyNameAndPosition,
-        })
-        .then(() => {})
-        .catch(() => {})
-    })
+    // run query to get information from job posting page
+    query()
 
     return () => {
       if (chrome.runtime.onMessage.hasListener(messageHandler)) {
