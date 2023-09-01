@@ -9,8 +9,8 @@ import { query } from './jobsnap'
 type Props = {}
 
 //2018-06-12T19:30
-const formDateTimeFormat = 'YYYY-MM-DDThh:mm'
-const savedDateTimeFormat = 'YYYY-MM-DD hh:mm'
+const formDateTimeFormat = 'YYYY-MM-DDTHH:mm'
+const savedDateTimeFormat = 'YYYY-MM-DD HH:mm'
 
 const now = () => {
   return dayjs().format(formDateTimeFormat)
