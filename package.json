@@ -20,7 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.37.1",
-    "@types/chrome": "^0.0.243",
+    "@types/chrome": "^0.0.244",
     "@types/node": "^20.5.3",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
