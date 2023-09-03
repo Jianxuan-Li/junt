@@ -71,6 +71,24 @@ export const snapGlassdoor = (): JobPostingMessage => {
         return
       }
     })
+  } else {
+    // find compnay name in `div` element
+    const companyDiv = doms[0].querySelectorAll('div')
+    if (companyDiv) {
+      let found = false
+      companyDiv.forEach((div) => {
+        div.classList.forEach((className) => {
+          if (className.match(/^JobDetails_jobDetailsHeader/)) {
+            if (div.firstChild) {
+              message.company = (div.firstChild as HTMLElement).innerText
+              found = true
+              return
+            }
+          }
+        })
+        if (found) return
+      })
+    }
   }
 
   message.url = window.location.href
