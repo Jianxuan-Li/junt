@@ -1,4 +1,5 @@
-import { snapLinkedin, snapGlassdoor } from './snapfunc'
+import { snapGlassdoor } from './snapfuncs/glassdoor'
+import { snapLinkedin } from './snapfuncs/linkedin'
 const urlMap = new Map<string, string>()
 
 urlMap.set('linkedin.com/jobs/search/', 'linkedinList')
@@ -47,8 +48,6 @@ export const query = () => {
         func: snap,
       })
       .then(() => {})
-      .catch(() => {
-        console.log('error')
-      })
+      .catch(() => {})
   })
 }
