@@ -1,4 +1,4 @@
-import snap from './snapfunc'
+import { snapLinkedin, snapGlassdoor } from './snapfunc'
 const urlMap = new Map<string, string>()
 
 urlMap.set('linkedin.com/jobs/search/', 'linkedinList')
@@ -27,12 +27,24 @@ export const query = () => {
     let site = supportedSite(tab.url || '')
     if (site === null) return
 
+    let snap = null
+
+    switch (site) {
+      case 'linkedinList':
+        snap = snapLinkedin
+        break
+      case 'glassdoorList':
+        snap = snapGlassdoor
+        break
+      default:
+        return
+    }
+
     // execute script on tab
     chrome.scripting
       .executeScript({
         target: { tabId: tab.id },
         func: snap,
-        args: [site],
       })
       .then(() => {})
       .catch(() => {
