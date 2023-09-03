@@ -2,6 +2,7 @@ import './injection/inject.css'
 import { getFromSyncStorage, getFromLocalStorage } from './libs/storage'
 import { SYNC_STORAGE_KEY_SHEET_ID, STORAGE_KEY_APPLIED_LIST } from './constants/storage'
 import LinkedinInjector from '@/injection/injectors/linkedin'
+import GlassdoorInjector from '@/injection/injectors/glassdoor'
 import InjectionFactory from '@/injection/factory'
 import { AppliedMap } from '@/types/appliedJob'
 import { listToMap } from '@/libs/appliedJobsUtil'
@@ -24,6 +25,12 @@ const getInjector = (): null | InjectionFactory => {
     case 'www.linkedin.com':
     case 'linkedin.com':
       selectedInjector = new LinkedinInjector()
+      break
+    case 'www.glassdoor.ca':
+    case 'www.glassdoor.com':
+    case 'glassdoor.ca':
+    case 'glassdoor.com':
+      selectedInjector = new GlassdoorInjector()
       break
     default:
       break

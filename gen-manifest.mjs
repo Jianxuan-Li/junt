@@ -20,8 +20,8 @@ let options = {
   },
   content_scripts: [
     {
-      // linkedin.com
-      matches: ['https://*.linkedin.com/*'],
+      // linkedin.com, glassdoor.ca, glassdoor.com
+      matches: ['https://*.linkedin.com/*', 'https://*.glassdoor.ca/*', 'https://*.glassdoor.com/*'],
       css: ['inject.css'],
       js: ['inject.js'],
       run_at: 'document_end',
