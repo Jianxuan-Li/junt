@@ -1,8 +1,8 @@
 import { AppliedMap, AppliedMapValue } from '@/types/appliedJob'
 import { InjectionTarget } from '../interfaces'
 import * as urls from '@/constants/allowedSites'
-import dayjs from 'dayjs'
 import { createBadge, badgeSelector } from '../badgeUtil'
+import { waitForElementToExist } from '../domUtil'
 
 export default class GlassdoorTarget implements InjectionTarget {
   // for interface
@@ -36,6 +36,7 @@ export default class GlassdoorTarget implements InjectionTarget {
   }
 
   private showAppliedBadge = (element: HTMLElement): void => {
+    if (!element) return
     const baseElement = element
     const listItems = baseElement.querySelectorAll('li')
     for (const item of listItems) {
@@ -81,37 +82,68 @@ export default class GlassdoorTarget implements InjectionTarget {
     }
     this.ulObserver = new MutationObserver(callback)
     this.ulObserver.observe(ul, config)
-    return
+  }
+
+  // inject badges to job list on index (e.g. https://www.glassdoor.ca/Job/index.htm)
+  private indexInjector = (): void => {
+    const targetNode = document.getElementById('__next')
+    const config = { attributes: true, childList: true, subtree: true }
+
+    // Callback function to execute when mutations are observed
+    // this observer is to detect the job list element, which is a ul element
+    const callback = (mutationList: MutationRecord[]) => {
+      const ul = document.querySelectorAll('ul')
+      let found = false
+      for (const element of ul) {
+        element.classList.forEach((className) => {
+          if (className.includes(this.jobListElementClass)) {
+            this.injectToSearchList(element)
+            this.jobListElement = element
+            found = true
+            // disconnect current observer, use ul observer instead to reduce performance impact
+            this.observer?.disconnect()
+            return
+          }
+        })
+        if (found) break
+      }
+    }
+    this.observer = new MutationObserver(callback)
+    this.observer.observe(targetNode, config)
+  }
+
+  // inject badges to search result page (e.g. https://www.glassdoor.ca/Job/software-developer-jobs-SRCH_KO0,18.htm)
+  private searchResultInjector = async (): Promise<void> => {
+    const ul = await waitForElementToExist('article#MainCol ul')
+    if (ul.length === 0) return
+
+    const ule = ul[0] as HTMLUListElement
+
+    this.injectToSearchList(ule)
+    this.jobListElement = ule
   }
 
   public inject(): Promise<void> {
     return new Promise(async (resolve) => {
       try {
-        const targetNode = document.getElementById('__next')
-        const config = { attributes: true, childList: true, subtree: true }
-
-        // Callback function to execute when mutations are observed
-        // this observer is to detect the job list element, which is a ul element
-        const callback = (mutationList: MutationRecord[]) => {
-          const ul = document.querySelectorAll('ul')
-          let found = false
-          for (const element of ul) {
-            element.classList.forEach((className) => {
-              if (className.includes(this.jobListElementClass)) {
-                this.injectToSearchList(element)
-                this.jobListElement = element
-                found = true
-                // disconnect current observer, use ul observer instead to reduce performance impact
-                this.observer?.disconnect()
-                return
-              }
-            })
-            if (found) break
-          }
+        const currentUrl = window.location.href
+        if (currentUrl.includes('index.htm')) {
+          this.indexInjector()
+          resolve()
+          return
         }
-        this.observer = new MutationObserver(callback)
-        this.observer.observe(targetNode, config)
+
+        if (currentUrl.includes('-jobs-')) {
+          this.searchResultInjector()
+          resolve()
+          return
+        }
+
+        // other wise, stop injection
+        this.destory()
       } catch (e) {}
+
+      // always resolve
       resolve()
     })
   }
