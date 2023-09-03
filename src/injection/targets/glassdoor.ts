@@ -15,6 +15,7 @@ export default class GlassdoorTarget implements InjectionTarget {
   ulObserver: MutationObserver | null = null
   jobListElementType: string = 'ul'
   jobListElementClass: string = 'JobsList_jobsList'
+  jobListElement: HTMLElement | null = null
 
   constructor(url: string) {
     this.url = url
@@ -98,6 +99,7 @@ export default class GlassdoorTarget implements InjectionTarget {
             element.classList.forEach((className) => {
               if (className.includes(this.jobListElementClass)) {
                 this.injectToSearchList(element)
+                this.jobListElement = element
                 found = true
                 // disconnect current observer, use ul observer instead to reduce performance impact
                 this.observer?.disconnect()
@@ -122,6 +124,6 @@ export default class GlassdoorTarget implements InjectionTarget {
   }
 
   public updateInjection = (): void => {
-    return
+    this.showAppliedBadge(this.jobListElement as HTMLElement)
   }
 }
