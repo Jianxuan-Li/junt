@@ -2,6 +2,7 @@ import { Builder, By, Key, until } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
 import assert from 'assert'
 import 'dotenv/config'
+import { WebDriver } from 'selenium-webdriver'
 
 // lunch browser with debugger port
 /*
@@ -19,27 +20,44 @@ const dataDir = process.env.CHROME_DATA
 const debuggerPort = process.env.CHROME_PORT || '9222'
 const debuggerAddress = `localhost:${debuggerPort}`
 
-describe('Linkedin Job Search Monitor', () => {
-  it('should have the right title', async () => {
-    ;(async function helloSelenium() {
-      let driver = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(new Options().setChromeBinaryPath(binPath))
-        .setChromeOptions(new Options().headless())
-        .setChromeOptions(new Options().addArguments(`user-data-dir=${dataDir}`))
-        .setChromeOptions(new Options().debuggerAddress(debuggerAddress))
-        .build()
+describe('Linkedin Monitor', () => {
+  it('check elements', async () => {
+    let driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(new Options().setChromeBinaryPath(binPath))
+      // .setChromeOptions(new Options().headless())
+      .setChromeOptions(new Options().addArguments(`user-data-dir=${dataDir}`))
+      .setChromeOptions(new Options().debuggerAddress(debuggerAddress))
+      .build()
+    driver.manage().window().maximize()
+    driver.manage().setTimeouts({ implicit: 3000 })
 
-      driver.manage().window().maximize()
+    await driver.get(jobSearchUrl)
+    await driver.sleep(2000)
 
-      await driver.get(jobSearchUrl)
-      await driver.sleep(2000)
+    await driver.wait(until.elementLocated(By.css('.scaffold-layout__list-container')), 30000)
+    {
+      const elements = await driver.findElements(By.css('.scaffold-layout__list-container'))
+      assert(elements.length)
+    }
+    await driver.wait(
+      until.elementLocated(By.css('.jobs-search-two-pane__job-card-container--viewport-tracking-0')),
+      30000,
+    )
+    {
+      const elements = await driver.findElements(By.css('.artdeco-entity-lockup__content'))
+      assert(elements.length)
+    }
+    {
+      const elements = await driver.findElements(By.css('.job-card-container__primary-description'))
+      assert(elements.length)
+    }
+    await driver.wait(until.elementLocated(By.css('.jobs-unified-top-card__primary-description')), 30000)
+    {
+      const elements = await driver.findElements(By.css('.jobs-unified-top-card__job-title'))
+      assert(elements.length)
+    }
 
-      // title matches '.*Python Jobs | LinkedIn'
-      const title = await driver.getTitle()
-      assert(title.match(/.*Python Jobs \| LinkedIn/))
-
-      await driver.quit()
-    })()
+    await driver.quit()
   })
 })

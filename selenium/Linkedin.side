@@ -1,0 +1,95 @@
+{
+  "id": "114bfa09-9994-4c2c-836b-afd9ced4ec32",
+  "version": "2.0",
+  "name": "Junt",
+  "url": "https://www.linkedin.com",
+  "tests": [{
+    "id": "09c58fd4-d244-49a0-b8d4-83d68c181f1a",
+    "name": "test list",
+    "commands": [{
+      "id": "ea53970a-834c-47b4-998c-f3bfdb80e55d",
+      "comment": "",
+      "command": "open",
+      "target": "/jobs/search/?currentJobId=3707524537&distance=25&geoId=105149290&keywords=Python",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3b3f7e82-af2b-4cf2-81a7-3667279342c8",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.scaffold-layout__list-container",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "6efb728e-f23b-4081-9d01-d924f7d58dbf",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.scaffold-layout__list-container",
+      "targets": [
+        ["css=.jobs-search-results-list__list-item--active", "css:finder"],
+        ["xpath=//li[@id='ember219']/div/div", "xpath:idRelative"],
+        ["xpath=//main/div/div/div/ul/li/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6978ab72-c199-41b2-ba98-3c757059355f",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.jobs-search-two-pane__job-card-container--viewport-tracking-0",
+      "targets": [
+        ["css=.jobs-search-two-pane__job-card-container--viewport-tracking-1", "css:finder"],
+        ["xpath=//li[@id='ember296']/div/div", "xpath:idRelative"],
+        ["xpath=//li[2]/div/div", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "e1dca994-6b0d-48e2-9ab6-2ba4a2cae55c",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.artdeco-entity-lockup__content",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "41c0b423-0eb3-40f8-bbcd-7d35847bf6b9",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.job-card-container__primary-description",
+      "targets": [
+        ["css=#ember302 > .job-card-container__primary-description", "css:finder"],
+        ["xpath=//div[@id='ember302']/span", "xpath:idRelative"],
+        ["xpath=//div[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Promise Robotics')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "827dbf2e-72b8-4058-9352-728a712587b8",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.jobs-unified-top-card__primary-description",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "b6625619-e2dc-4962-80c7-235ce37b82fa",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.jobs-unified-top-card__job-title",
+      "targets": [
+        ["css=.jobs-unified-top-card__job-title", "css:finder"],
+        ["xpath=//a[@id='ember41']/h2", "xpath:idRelative"],
+        ["xpath=//a/h2", "xpath:position"],
+        ["xpath=//h2[contains(.,'Senior Software Engineer')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "291f2849-de86-44f3-86d5-4afc20c7ba8e",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["09c58fd4-d244-49a0-b8d4-83d68c181f1a"]
+  }],
+  "urls": ["https://www.linkedin.com/"],
+  "plugins": []
+}

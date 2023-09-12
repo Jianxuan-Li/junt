@@ -5,4 +5,4 @@ build:
 	node ./gen-manifest.mjs
 	pnpm run build
 test:
-	pnpm exec playwright test
+	pnpm test
