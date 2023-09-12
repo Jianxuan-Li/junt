@@ -10,7 +10,8 @@
     "moduleResolution": "NodeNext",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["node", "mocha"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules"]

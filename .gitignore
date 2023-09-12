@@ -3,6 +3,7 @@ extension_base/manifest.json
 dist.zip
 tests-examples
 tmp
+playwright
 
 # Logs
 logs

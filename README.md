@@ -66,25 +66,21 @@ Step 4: Load extension
 
 Caveat: before running tests, you need to install dependencies first. and run `make build` to build the project.
 
+`.env` file:
+
 ```bash
-pnpm exec playwright test
-  Runs the end-to-end tests.
-
-pnpm exec playwright test --ui
-  Starts the interactive UI mode.
-
-pnpm exec playwright test --project=chromium
-  Runs the tests only on Desktop Chrome.
-
-pnpm exec playwright test example
-  Runs the tests in a specific file.
-
-pnpm exec playwright test --debug
-  Runs the tests in debug mode.
-
-pnpm exec playwright codegen
-  Auto generate tests with Codegen.
+CHROME_DATA=/tmp/junt-test
+CHROME_BIN=/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
+CHROME_PORT=9222
 ```
+
+for the first time, you need to run Chrome and login to Linkedin, Glassdoor, and Indeed. Also install Junt extension. e.g.
+
+```bash
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=$(pwd)/tmp/junt-test --load-extension=Your_Project_Path/dist
+```
+
+Then run: `make test`
 
 ## Publish
 
