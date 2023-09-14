@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - '0.0.0.0:27011:4444'
+      - '0.0.0.0:7900:7900'
+    volumes:
+      - ./tmp/chrome-test:/chrome-profile
