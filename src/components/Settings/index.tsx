@@ -5,6 +5,7 @@ import { SheetInfoContext } from '@/context/SheetInfoContext'
 import './index.css'
 import ConnectButton from './ConnectButton'
 import DisconnectButton from './DisconnectButton'
+import OpenSheetButton from './OpenSheetButton'
 import FindSheetsId from './FindSheetsId'
 import { fetchAppliedList } from '@/libs/sync'
 
@@ -92,7 +93,12 @@ export default function index({}: Props) {
         <div className="connectedInfo">Connected to your google sheets: {sheet.properties.title}</div>
       )}
 
-      {!loading && sheet !== null && <DisconnectButton onClick={handleDisconnect} />}
+      {!loading && sheet !== null && (
+        <>
+          <DisconnectButton onClick={handleDisconnect} />
+          <OpenSheetButton id={sheetId} />
+        </>
+      )}
     </div>
   )
 }
