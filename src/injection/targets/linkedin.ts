@@ -66,9 +66,9 @@ export default class LinkedinTarget implements InjectionTarget {
           badge.classList.add(this.appliedBadgeElement.split('.')[1])
           if (applied.title) {
             badge.innerHTML = `Junt: You applied ${applied.title}`
-            badge.innerHTML += `<br />on ${dayjs(applied.datetime).format('dddd, MM Do YYYY, h:mm')}`
+            badge.innerHTML += `<br />on ${dayjs(applied.datetime).format('dddd, MM D YYYY, h:mm')}`
           } else {
-            badge.innerHTML = `Junt: You applied on ${dayjs(applied.datetime).format('dddd, MM Do YYYY, h:mm')}`
+            badge.innerHTML = `Junt: You applied on ${dayjs(applied.datetime).format('dddd, MM D YYYY, h:mm')}`
           }
           const targetDom = item.querySelector(this.appliedBadgeParentElement)
           targetDom.insertBefore(badge, targetDom.lastChild)
