@@ -14,7 +14,9 @@ export const snapLinkedin = (): JobPostingMessage => {
   }
 
   if (!message.company) {
-    const companyDiv = document.querySelectorAll('div.job-details-jobs-unified-top-card__primary-description')
+    const companyDiv = document.querySelectorAll(
+      'div.job-details-jobs-unified-top-card__primary-description a.app-aware-link',
+    )
     if (companyDiv && companyDiv.length > 0) {
       message.company = (companyDiv[0] as HTMLElement).innerText
     }

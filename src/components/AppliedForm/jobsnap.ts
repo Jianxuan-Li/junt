@@ -1,9 +1,11 @@
 import { snapGlassdoor } from './snapfuncs/glassdoor'
 import { snapLinkedin } from './snapfuncs/linkedin'
+import { snapLinkedinDetail } from './snapfuncs/linkedinDetail'
 const urlMap = new Map<string, string>()
 
 urlMap.set('linkedin.com/jobs/search/', 'linkedinList')
 urlMap.set('linkedin.com/jobs/collections/', 'linkedinList')
+urlMap.set('linkedin.com/jobs/view/', 'linkedinDetail')
 urlMap.set('glassdoor.ca/Job', 'glassdoorList')
 urlMap.set('glassdoor.com/Job', 'glassdoorList')
 
@@ -36,6 +38,9 @@ export const query = () => {
         break
       case 'glassdoorList':
         snap = snapGlassdoor
+        break
+      case 'linkedinDetail':
+        snap = snapLinkedinDetail
         break
       default:
         return

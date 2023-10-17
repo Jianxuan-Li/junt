@@ -3,5 +3,5 @@ export type JobPostingMessage = {
   title?: string
   url?: string
   message?: string
-  type: 'job-listing-linkedin' | 'job-listing-glassdoor' | 'job-searching-glassdoor'
+  type: 'job-listing-linkedin' | 'job-detail-linkedin' | 'job-listing-glassdoor' | 'job-searching-glassdoor'
 }
