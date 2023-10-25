@@ -60,6 +60,8 @@ export default class GlassdoorTarget implements InjectionTarget {
 
       if (!companyName || !companyElement) continue
 
+      companyName = companyName.toLowerCase()
+
       const applied = this.appliedMap.get(companyName)
       const badge = companyElement.querySelector(badgeSelector)
       if (applied && !badge) {

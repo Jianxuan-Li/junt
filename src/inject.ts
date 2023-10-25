@@ -5,7 +5,7 @@ import LinkedinInjector from '@/injection/injectors/linkedin'
 import GlassdoorInjector from '@/injection/injectors/glassdoor'
 import InjectionFactory from '@/injection/factory'
 import { AppliedMap } from '@/types/appliedJob'
-import { listToMap } from '@/libs/appliedJobsUtil'
+import { listToMapLowerCase as listToMap } from '@/libs/appliedJobsUtil'
 
 // using factory to create a new instance of a injection class
 let injector: null | InjectionFactory = null

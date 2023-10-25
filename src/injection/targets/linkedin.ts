@@ -59,7 +59,7 @@ export default class LinkedinTarget implements InjectionTarget {
       const companyElement = item.querySelector(this.companyNameElement)
       if (companyElement) {
         const companyName = (companyElement as HTMLElement).innerText
-        const applied = this.appliedMap.get(companyName)
+        const applied = this.appliedMap.get(companyName.toLowerCase())
         const badge = item.querySelector(this.appliedBadgeElement)
         if (applied && !badge) {
           const badge = document.createElement('div')
