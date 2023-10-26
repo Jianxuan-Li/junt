@@ -115,6 +115,7 @@ export default class GlassdoorTarget implements InjectionTarget {
   }
 
   // inject badges to search result page (e.g. https://www.glassdoor.ca/Job/software-developer-jobs-SRCH_KO0,18.htm)
+  // 2023-10-26 update: glassdoor now using same page as index page
   private searchResultInjector = async (): Promise<void> => {
     const ul = await waitForElementToExist('article#MainCol ul')
     if (ul.length === 0) return
@@ -136,7 +137,7 @@ export default class GlassdoorTarget implements InjectionTarget {
         }
 
         if (currentUrl.includes('-jobs-')) {
-          this.searchResultInjector()
+          this.indexInjector()
           resolve()
           return
         }
