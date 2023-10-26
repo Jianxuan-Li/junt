@@ -130,13 +130,7 @@ export default class GlassdoorTarget implements InjectionTarget {
     return new Promise(async (resolve) => {
       try {
         const currentUrl = window.location.href
-        if (currentUrl.includes('index.htm')) {
-          this.indexInjector()
-          resolve()
-          return
-        }
-
-        if (currentUrl.includes('-jobs-')) {
+        if (currentUrl.includes('/Job')) {
           this.indexInjector()
           resolve()
           return
