@@ -35,32 +35,51 @@ export const snapGlassdoor = (): JobPostingMessage => {
         })
       }
 
-      // find company name, in the first `a` element
-      const companyA = doms[0].querySelector('a')
-      if (companyA) {
-        companyA.querySelectorAll('div').forEach((div) => {
-          if (div.firstChild && div.firstChild.textContent) {
-            message.company = div.firstChild.textContent
-            return
-          }
-        })
-      } else {
-        // find compnay name in `div` element
-        const companyDiv = doms[0].querySelectorAll('div')
-        if (companyDiv) {
-          let found = false
-          companyDiv.forEach((div) => {
-            div.classList.forEach((className) => {
-              if (className.match(/^JobDetails_jobDetailsHeader/)) {
-                if (div.firstChild) {
-                  message.company = (div.firstChild as HTMLElement).innerText
-                  found = true
-                  return
-                }
-              }
-            })
-            if (found) return
+      // find company name by span class name start with EmployerProfile_employerName
+      const spans = doms[0].querySelectorAll('span')
+      if (spans) {
+        let isMatch = false
+
+        spans.forEach((span) => {
+          span.classList.forEach((className) => {
+            if (className.match(/^EmployerProfile_employerName/)) {
+              message.company = (span as HTMLElement).innerText
+              isMatch = true
+              return
+            }
           })
+          if (isMatch) return
+        })
+      }
+
+      if (!message.company) {
+        // find company name, in the first `a` element
+        const companyA = doms[0].querySelector('a')
+        if (companyA) {
+          companyA.querySelectorAll('div').forEach((div) => {
+            if (div.firstChild && div.firstChild.textContent) {
+              message.company = div.firstChild.textContent
+              return
+            }
+          })
+        } else {
+          // find compnay name in `div` element
+          const companyDiv = doms[0].querySelectorAll('div')
+          if (companyDiv) {
+            let found = false
+            companyDiv.forEach((div) => {
+              div.classList.forEach((className) => {
+                if (className.match(/^JobDetails_jobDetailsHeader/)) {
+                  if (div.firstChild) {
+                    message.company = (div.firstChild as HTMLElement).innerText
+                    found = true
+                    return
+                  }
+                }
+              })
+              if (found) return
+            })
+          }
         }
       }
 
