@@ -8,15 +8,13 @@ export const snapLinkedin = (): JobPostingMessage => {
   }
 
   // find company name from linkedin job page
-  const companyDiv = document.querySelectorAll('div.jobs-unified-top-card__primary-description a.app-aware-link')
+  const companyDiv = document.querySelectorAll('div.jobs-unified-top-card a.app-aware-link')
   if (companyDiv && companyDiv.length > 0) {
     message.company = (companyDiv[0] as HTMLElement).innerText
   }
 
   if (!message.company) {
-    const companyDiv = document.querySelectorAll(
-      'div.job-details-jobs-unified-top-card__primary-description a.app-aware-link',
-    )
+    const companyDiv = document.querySelectorAll('div.jobs-unified-top-card a.app-aware-link')
     if (companyDiv && companyDiv.length > 0) {
       message.company = (companyDiv[0] as HTMLElement).innerText
     }
