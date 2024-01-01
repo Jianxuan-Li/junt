@@ -38,7 +38,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.3",
     "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
+    "lint-staged": "^15.2.0",
     "mini-css-extract-plugin": "^2.7.6",
     "mocha": "^10.2.0",
     "postcss": "^8.4.31",
