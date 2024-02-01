@@ -23,7 +23,7 @@
     "@playwright/test": "^1.39.0",
     "@types/chrome": "^0.0.244",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.11.14",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.18",
     "@types/selenium-webdriver": "^4.1.16",
