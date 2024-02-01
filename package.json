@@ -30,7 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.16.0",
     "autoprefixer": "^10.4.16",
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^6.8.1",
     "dotenv": "^16.3.1",
     "eslint": "^8.48.0",
