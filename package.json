@@ -41,7 +41,7 @@
     "lint-staged": "^15.2.0",
     "mini-css-extract-plugin": "^2.7.6",
     "mocha": "^10.2.0",
-    "postcss": "^8.4.31",
+    "postcss": "^8.4.33",
     "postcss-loader": "^7.3.3",
     "prettier": "^3.0.3",
     "react-dom": "^18.2.0",
